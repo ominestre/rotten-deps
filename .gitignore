@@ -1,3 +1,6 @@
+# lib is where the compiled JS is built for publishing
+lib/
+
 # Logs
 logs
 *.log
