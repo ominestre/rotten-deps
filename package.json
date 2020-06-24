@@ -4,21 +4,17 @@
   "description": "The command `npm outdated` only has two endpoints which are pass or fail. This dichotomy isn't very useful for CI flows which have pass, fail, or warn. This CLI utility combines `npm outdated` and `npm view` in order to establish a compliance period for dependency checks. This way if a dependency update is within your compliance period you can trigger a warn or if it's beyond your compliance period it can trigger a fail.",
   "main": "index.js",
   "scripts": {
-    "build": "babel src -d lib",
-    "test": "npm run build && mocha --require @babel/register"
+    "build": "tsc",
+    "test": "npm run build && mocha"
   },
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "@babel/cli": "^7.10.3",
-    "@babel/core": "^7.10.3",
-    "@babel/plugin-proposal-pipeline-operator": "^7.10.1",
-    "@babel/preset-env": "^7.10.3",
-    "@babel/register": "^7.10.3",
     "chai": "^4.2.0",
     "eslint": "^7.2.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.21.2",
-    "mocha": "^8.0.1"
+    "mocha": "^8.0.1",
+    "typescript": "^3.9.5"
   }
 }
