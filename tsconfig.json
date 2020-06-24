@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "outDir": "./compiled",
+    "types": [
+      "node"
+    ],
+    "outDir": "./lib",
     "allowJs": true,
     "target": "ES5"
   },
