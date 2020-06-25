@@ -14,4 +14,10 @@ describe('Configuration library', () => {
         done();
       });
   });
+
+  it('Should create a standard config object', () => {
+    const { createConfig } = configLib;
+    assert.deepEqual(createConfig({ foo: 1, bar: 2 }), { foo: 1, bar: 2 });
+    assert.deepEqual(createConfig({}), {});
+  });
 });

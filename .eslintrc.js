@@ -3,5 +3,6 @@ module.exports = {
   env: { node: true },
   rules: {
     'arrow-parens': 'off',
+    'no-multiple-empty-lines': ['error', { max: 2 }],
   },
 };

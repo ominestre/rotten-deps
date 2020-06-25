@@ -1,6 +1,24 @@
 import * as util from 'util';
 import * as fs from 'fs';
 
+
+interface Rule {
+  dependencyName: string;
+  ignore: boolean;
+  daysUntilExpiration: number;
+}
+
+
+interface Config {
+  rules: Rule[];
+}
+
+
+/*  TODO this will eventually overlay a default config with the provided
+      user config. For now it just reflects the input config */
+export const createConfig = (userConfig: object): Config => userConfig;
+
+
 /**
  * Creates a filereader function for fetching the contents of a config
  * file at the provided path.
@@ -13,4 +31,5 @@ export const createFileReader = (absoluteFilePath: string) => {
 
 export default {
   createFileReader,
+  createConfig,
 };
