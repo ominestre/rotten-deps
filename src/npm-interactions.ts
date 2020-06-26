@@ -1,5 +1,4 @@
 import * as proc from 'child_process';
-import * as util from 'util';
 
 
 export const createOutdatedRequest = (): Function => {
