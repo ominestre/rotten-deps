@@ -16,7 +16,7 @@ interface Config {
 
 /*  TODO this will eventually overlay a default config with the provided
       user config. For now it just reflects the input config */
-export const createConfig = (userConfig: object): Config => userConfig;
+export const createConfig = (userConfig: object) => userConfig;
 
 
 /**
