@@ -28,8 +28,10 @@ export const createDetailsRequest = (dependencyName: string): Function => {
   const command = process.platform === 'win32' ? 'npm.cmd' : 'npm';
   const args = ['view', '--json', dependencyName];
 
-  const commandPromise = util.promisify(proc.execFile);
-  return commandPromise.bind(null, command, args);
+  return (): Promise<object> => new Promise(resolve => {
+    const response = proc.execFileSync(command, args, { encoding: 'utf8' });
+    resolve(JSON.parse(response));
+  });
 };
 
 

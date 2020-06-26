@@ -40,5 +40,11 @@ describe('NPM Interaction Library', () => {
     const response = await getOutdatedRequest();
     assert(typeof response === 'object');
   });
+
+  it('Should prepare a request for NPM view', async () => {
+    const getDetailsRequest = npmLib.createDetailsRequest('express');
+    const response = await getDetailsRequest();
+    assert.equal(response.name, 'express');
+  });
 });
 
