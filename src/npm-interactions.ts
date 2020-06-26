@@ -14,8 +14,10 @@ export const createOutdatedRequest = (): Function => {
           in that case we resolve an empty object */
       resolve({});
     } catch (error) {
+      // since an error can be a success the proceeding attempt to bubble up actual failures
       if (error.message !== 'Command failed: npm outdated --json') reject(error);
       if (error.status !== 1) reject(error);
+
       resolve(JSON.parse(error.stdout));
     }
   });
