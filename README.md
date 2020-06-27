@@ -9,11 +9,56 @@ trigger a warn or if it's beyond your compliance period it can trigger a fail.
 
 ### Config Lib: `src/config.ts`
 
-#### createFileReader( absoluteFilePath: string ) => function
-This function creates a promisified wrapper of `fs.readFileSync` using the provided absolute path for execution down
+#### configuration.createFileReader( absoluteFilePath: string ) => function
+Creates a wrapper of `fs.readFileSync` using the provided absolute path for execution down
 the road.
 
 ```javascript
-const reader = configLib.createFileReader('/some/absolute/path');
-const data = await reader();
+import { configuration } from '@ominestre/rotten-deps';
+
+const foo = async () => {
+  const reader = configuration.createFileReader('/some/absolute/path');
+  const data = await reader();
+  // do stuff with data
+}
+```
+
+#### configuration.creatConfig( userConfig = {} ) => object
+Builds a user configuration object **without any validation** by taking a default config and
+overlaying the provided user config.
+
+### NPM Interactions Lib: `src/npm-interactions.ts`
+
+#### npm.createOutdatedRequest() => function() => Promise<object>
+Creates a deferred call to `npm outdated --json` that can be invoked later. The inner function
+returns a promise which handles a successful list of outdated dependencies resulting in a
+failed command. It will either resolve an object or bubble up any valid exceptions in running
+the command.
+
+```javascript
+import { npm } from '@ominestre/rotten-deps';
+
+const foo = async () => {
+  const getOutdatedRequest = npm.createOutdatedRequest();
+
+  try {
+    const data = getOutdatedRequest();
+    // do stuff with response
+  } catch (err) {
+    // put out the fire
+  }
+};
+```
+
+#### npm.createDetailsRequest( dependencyName: string ) => function() => Promise<object>
+Creates a deferred call to `npm view --json X` where `X` is a dependency name.
+
+```javascript
+import { npm } from '@ominestre/rotten-deps';
+
+const foo = async () => {
+  const getDetails = createDetailsRequest('@foo/bar');
+  const dependencyInfo = await getDetails();
+  // do stuff with info
+};
 ```

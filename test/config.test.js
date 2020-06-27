@@ -15,9 +15,12 @@ describe('Configuration library', () => {
       });
   });
 
+  xit('Should validate each rule from the user config');
+
   it('Should create a standard config object', () => {
     const { createConfig } = configLib;
-    assert.deepEqual(createConfig({ foo: 1, bar: 2 }), { foo: 1, bar: 2 });
-    assert.deepEqual(createConfig({}), {});
+    assert.deepEqual(createConfig({ foo: 1, bar: 2 }), { rules: [], foo: 1, bar: 2 });
+    assert.deepEqual(createConfig({}), { rules: [] });
+    assert.deepEqual(createConfig({ rules: ['one'], foo: 0 }), { rules: ['one'], foo: 0 });
   });
 });

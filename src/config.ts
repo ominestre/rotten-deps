@@ -14,9 +14,21 @@ interface Config {
 }
 
 
-/*  TODO this will eventually overlay a default config with the provided
-      user config. For now it just reflects the input config */
-export const createConfig = (userConfig: object) => userConfig;
+/**
+ * Generates a configuration object by combinding user config
+ * and default config. In cases of properties existing in both
+ * configs the provided user config will take precedence.
+ */
+export const createConfig = (userConfig = {}): object => {
+  const defaultConfig = {
+    rules: [],
+  };
+
+  return {
+    ...defaultConfig,
+    ...userConfig,
+  };
+};
 
 
 /**
