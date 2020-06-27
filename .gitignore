@@ -1,5 +1,8 @@
-# lib is where the compiled JS is built for publishing
+# lib and bin are compiled TS output
 lib/
+bin/
+!src/lib/
+!src/bin/
 
 # Logs
 logs

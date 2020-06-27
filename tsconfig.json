@@ -1,13 +1,15 @@
 {
   "compilerOptions": {
     "types": [
-      "node"
+      "node",
+      "yargs"
     ],
-    "outDir": "./lib",
+    "outDir": "./",
     "allowJs": true,
     "target": "ES5"
   },
   "include": [
     "./src/**/*"
-  ]
+  ],
+  "exclude": []
 }

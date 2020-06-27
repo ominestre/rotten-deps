@@ -19,6 +19,8 @@ interface OutdatedDependency {
 const Maybe = function (x) { this._value = x; };
 Maybe.of = (x) => new Maybe(x);
 Maybe.prototype.map = function (f) { return Maybe.of(f(this._value)); };
+Maybe.prototype.isError = function () { return this._value instanceof Error; };
+Maybe.prototype.flatten = function () { return this._value; };
 
 // generateReport( config: object ) => Maybe()
 export const generateReport = async (config) => {
@@ -36,7 +38,7 @@ export const generateReport = async (config) => {
   }
 
   try {
-    let reportData: ReportData[];
+    const reportData = [];
 
     Object.entries(outdated).forEach(async (val) => {
       const [name, desiredDetails]: [string, OutdatedDependency] = val;
@@ -44,9 +46,10 @@ export const generateReport = async (config) => {
       const { time } = await getDetails();
       const currentTime = time[desiredDetails.current];
       const latestTime = time[desiredDetails.latest];
-      const currentDay = new Date(currentTime).getUTCDay();
-      const latestDay = new Date(latestTime).getUTCDay();
-      const daysOutdated = currentDay - latestDay;
+      const currentDay = new Date(currentTime).getTime();
+      const latestDay = new Date(latestTime).getTime();
+      // 86400000 is the amount of milliseconds in a day
+      const daysOutdated = Math.floor((latestDay - currentDay) / 86400000);
 
       let isOutdated: boolean;
 
