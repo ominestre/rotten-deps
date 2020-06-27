@@ -15,7 +15,25 @@ describe('Configuration library', () => {
       });
   });
 
-  xit('Should validate each rule from the user config');
+  it('Should validate each rule from the user config', () => {
+    assert.isTrue(configLib.hasValidRules([
+      { dependencyName: 'foo', ignore: false, daysUntilExpiration: 30 },
+      { dependencyName: 'bar', ignore: true, daysUntilExpiration: 0 },
+    ]));
+
+    assert.isNotTrue(configLib.hasValidRules([
+      { dependencyName: 'foo', ignore: true, daysUntilExpiration: 300 },
+      { dependencyName: null, ignore: true, daysUntilExpiration: 9001 },
+    ]));
+
+    assert.isNotTrue(configLib.hasValidRules([
+      { dependencyName: 'foo', ignore: 'maybe', daysUntilExpiration: 30 },
+    ]));
+
+    assert.isNotTrue(configLib.hasValidRules([
+      { dependencyName: 'banana', ignore: true, daysUntilExpiration: 'thirteen' },
+    ]));
+  });
 
   it('Should create a standard config object', () => {
     const { createConfig } = configLib;

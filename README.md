@@ -7,9 +7,7 @@ trigger a warn or if it's beyond your compliance period it can trigger a fail.
 
 ## API
 
-### Config Lib: `src/config.ts`
-
-#### configuration.createFileReader( absoluteFilePath: string ) => function
+### configuration.createFileReader( absoluteFilePath: string ) => function
 
 Creates a wrapper of `fs.readFileSync` using the provided absolute path for execution down
 the road.
@@ -24,14 +22,30 @@ const foo = async () => {
 }
 ```
 
-#### configuration.creatConfig( userConfig = {} ) => object
+---
+
+### configuration.creatConfig( userConfig = {} ) => object
 
 Builds a user configuration object **without any validation** by taking a default config and
 overlaying the provided user config.
 
-### NPM Interactions Lib: `src/npm-interactions.ts`
+---
 
-#### npm.createOutdatedRequest() => function() => Promise<object>
+### configuration.hasValidRules( rules: Rule[] ) => boolean
+
+```javascript
+type Rule = {
+  dependencyName: string,
+  ingore: boolean,
+  daysUntilExpiration: number
+}
+```
+
+Checks to make sure the configured rules match the expected type above
+
+---
+
+### npm.createOutdatedRequest() => function() => Promise<object>
 
 Creates a deferred call to `npm outdated --json` that can be invoked later. The inner function
 returns a promise which handles a successful list of outdated dependencies resulting in a
@@ -53,7 +67,10 @@ const foo = async () => {
 };
 ```
 
-#### npm.createDetailsRequest( dependencyName: string ) => function() => Promise<object>
+---
+
+### npm.createDetailsRequest( dependencyName: string ) => function() => Promise<object>
+
 Creates a deferred call to `npm view --json X` where `X` is a dependency name.
 
 ```javascript
@@ -65,3 +82,5 @@ const foo = async () => {
   // do stuff with info
 };
 ```
+
+---

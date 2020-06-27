@@ -4,5 +4,8 @@ module.exports = {
   rules: {
     'arrow-parens': 'off',
     'no-multiple-empty-lines': ['error', { max: 2 }],
+    'no-underscore-dangle': 'off',
+    'import/no-unresolved': 'off',
+    'import/extensions': 'off',
   },
 };

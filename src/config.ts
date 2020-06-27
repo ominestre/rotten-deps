@@ -9,9 +9,17 @@ interface Rule {
 }
 
 
-interface Config {
-  rules: Rule[];
-}
+export const hasValidRules = (rules: Rule[]): boolean => {
+  let valid = true;
+
+  rules.forEach((rule: Rule) => {
+    if (typeof rule.dependencyName !== 'string' || !rule.dependencyName.length) valid = false;
+    if (typeof rule.ignore !== 'boolean') valid = false;
+    if (typeof rule.daysUntilExpiration !== 'number') valid = false;
+  });
+
+  return valid;
+};
 
 
 /**
@@ -44,4 +52,5 @@ export const createFileReader = (absoluteFilePath: string) => {
 export default {
   createFileReader,
   createConfig,
+  hasValidRules,
 };
