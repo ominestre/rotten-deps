@@ -10,6 +10,7 @@ trigger a warn or if it's beyond your compliance period it can trigger a fail.
 ### Config Lib: `src/config.ts`
 
 #### configuration.createFileReader( absoluteFilePath: string ) => function
+
 Creates a wrapper of `fs.readFileSync` using the provided absolute path for execution down
 the road.
 
@@ -24,12 +25,14 @@ const foo = async () => {
 ```
 
 #### configuration.creatConfig( userConfig = {} ) => object
+
 Builds a user configuration object **without any validation** by taking a default config and
 overlaying the provided user config.
 
 ### NPM Interactions Lib: `src/npm-interactions.ts`
 
 #### npm.createOutdatedRequest() => function() => Promise<object>
+
 Creates a deferred call to `npm outdated --json` that can be invoked later. The inner function
 returns a promise which handles a successful list of outdated dependencies resulting in a
 failed command. It will either resolve an object or bubble up any valid exceptions in running
