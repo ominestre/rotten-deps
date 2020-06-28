@@ -1,0 +1,6 @@
+{
+  "rules": [
+    {"dependencyName": "eslint", "ignore": false, "daysUntilExpiration": 30},
+    {"dependencyName": "chai", "ignore": true, "daysUntilExpiration": 0}
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "name": "sample-app",
+  "version": "1.0.0",
+  "description": "testing playground",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "mocha": "2.5.3"
+  },
+  "dependencies": {
+    "left-pad": "1.2.0"
+  }
+}
