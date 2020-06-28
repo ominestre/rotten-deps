@@ -1,6 +1,6 @@
 import { assert } from 'chai';
 import * as path from 'path';
-import configLib from '../src/config';
+import configLib from '../src/lib/config';
 
 describe('Configuration library', () => {
   it('Should read a configuration file from filesystem', (done) => {

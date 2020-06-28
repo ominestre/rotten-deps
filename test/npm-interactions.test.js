@@ -1,5 +1,5 @@
 import { assert } from 'chai';
-import npmLib from '../src/npm-interactions';
+import npmLib from '../src/lib/npm-interactions';
 
 
 /**
