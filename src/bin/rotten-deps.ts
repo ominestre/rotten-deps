@@ -1,8 +1,12 @@
 #!/usr/bin/env node
 
 import * as yargs from 'yargs';
-import { isAbsolute } from 'path';
+import {
+  isAbsolute,
+  resolve as pathResolve,
+} from 'path';
 import * as Table from 'cli-table';
+import { existsSync } from 'fs';
 import { configuration, generateReport } from '../lib/index';
 
 const { argv } = yargs
@@ -16,9 +20,7 @@ const { argv } = yargs
 
 if (argv.help) yargs.showHelp();
 
-const configPath = argv['config-path'];
-
-if (isAbsolute(configPath)) {
+const maestro = (configPath) => {
   const configReader = configuration.createFileReader(configPath);
 
   const processConfigData = raw => new Promise(resolve => {
@@ -59,6 +61,14 @@ if (isAbsolute(configPath)) {
     .then(generateReport)
     .then(processReport)
     .then(console.log);
+};
+
+const configPath = argv['config-path'];
+
+if (isAbsolute(configPath)) {
+  maestro(configPath);
 } else {
-  console.log('no data');
+  const maybePath = pathResolve(configPath);
+  if (!existsSync(maybePath)) yargs.exit(1, new Error(`${configPath} could not be resolved from configuration`));
+  maestro(maybePath);
 }
