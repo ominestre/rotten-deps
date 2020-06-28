@@ -60,7 +60,7 @@ export const generateReport = async (config) => {
 
       reportData.push({
         name,
-        current: desiredDetails.current,
+        current: desiredDetails.wanted,
         latest: desiredDetails.latest,
         daysOutdated,
         isOutdated,
