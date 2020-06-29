@@ -19,18 +19,21 @@ const getTestConfig = (configID) => JSON.parse(readFileSync(`${sampleConfigDir}/
 describe('API integrations', () => {
   afterEach(restoreDir);
 
-  it('Should generate a report using an config with only rules', async () => {
+  // TODO blocked by https://github.com/ominestre/rotten-deps/issues/3
+  xit('Should generate a report using a config with only rules', async () => {
     sampleAppDir();
     const config = getTestConfig('rules-only-config');
     const maybe = await generateReport(config);
 
-    assert.isNotTrue(maybe.isError());
-    const results = maybe.flatten(); // ?
-    const leftPadLOL = results.filter(x => x.name === 'left-pad')[0]; // ?
+    assert.isNotTrue(maybe.isError(), 'Maybe wrapper should not contain an error');
+
+    const results = maybe.flatten();
+    const leftPadLOL = results.filter(x => x.name === 'left-pad')[0];
+
     assert.equal(leftPadLOL.name, 'left-pad');
     assert.equal(leftPadLOL.current, '1.2.0');
-    assert.isTrue(typeof leftPadLOL.daysOutdated < 9000);
-    assert.isFalse(leftPadLOL.isOutdated);
+    assert.isTrue(leftPadLOL.daysOutdated < 9000, 'Days Outdated should be less than 9000');
+    assert.isFalse(leftPadLOL.isOutdated, 'left-pad should not be flagged as outdated');
   });
 
   /*  Sitting on this one because you should just be using npm or yarn outdated.
