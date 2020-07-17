@@ -1,5 +1,7 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
+    "pretty": true,
     "types": [
       "node",
       "yargs"

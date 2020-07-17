@@ -3,12 +3,24 @@ import * as fs from 'fs';
 
 
 interface Rule {
-  dependencyName: string;
-  ignore: boolean;
-  daysUntilExpiration: number;
+  readonly dependencyName: string;
+  readonly ignore: boolean;
+  readonly daysUntilExpiration: number;
+}
+
+interface Config {
+  readonly rules: Rule[];
+}
+
+interface FileReader {
+  (): Promise<String>;
 }
 
 
+/**
+ * Checks the validity of each rule in a configuration
+ * @param rules list of rules to validate
+ */
 export const hasValidRules = (rules: Rule[]): boolean => {
   let valid = true;
 
@@ -23,11 +35,12 @@ export const hasValidRules = (rules: Rule[]): boolean => {
 
 
 /**
- * Generates a configuration object by combinding user config
+ * Generates a configuration object by combining user config
  * and default config. In cases of properties existing in both
- * configs the provided user config will take precedence.
+ * configs the provided user config will take precendecn
+ * @param userConfig
  */
-export const createConfig = (userConfig = {}): object => {
+export const createConfig = (userConfig = {}): Config => {
   const defaultConfig = {
     rules: [],
   };
@@ -44,10 +57,11 @@ export const createConfig = (userConfig = {}): object => {
  * file at the provided path.
  * @param absoluteFilePath absolute path to the configuration file
  */
-export const createFileReader = (absoluteFilePath: string) => {
+export const createFileReader = (absoluteFilePath: string): FileReader => {
   const readFilePromise = util.promisify(fs.readFile);
   return readFilePromise.bind(null, absoluteFilePath, { encoding: 'utf8' });
 };
+
 
 export default {
   createFileReader,

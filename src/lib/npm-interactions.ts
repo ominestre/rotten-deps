@@ -1,19 +1,34 @@
 import * as proc from 'child_process';
 
+interface PackageDetails {
+  time?: object;
+}
 
-export const createOutdatedRequest = (): Function => {
+interface OutdatedRequest {
+  (): Promise<object | Error>;
+}
+
+interface DetailsRequest {
+  (): Promise<PackageDetails>;
+}
+
+
+/**
+ * Creates a function for running `npm outdated`
+ */
+export const createOutdatedRequest = (): OutdatedRequest => {
   const command = process.platform === 'win32' ? 'npm.cmd' : 'npm';
   const args = ['outdated', '--json'];
 
-  return (): Promise<object> => new Promise((resolve, reject) => {
-    // `npm outdated` errors with an exit code of 1 when you have outdated dependencies
+  return () => new Promise((resolve, reject) => {
+    /*  `npm outdated` errors with an exit code of 1 when you have outdated dependencies
+        since one of the success scenarios involves an error this attempts to split
+        actual errors from outdated dependencies */
     try {
       proc.execFileSync(command, args, { encoding: 'utf8' });
-      /*  if `execFileSync` successfully runs there are no outdated dependencies
-          in that case we resolve an empty object */
+      // if the command is successful you have no outdated dependencies
       resolve({});
     } catch (error) {
-      // since an error can be a success the proceeding attempt to bubble up actual failures
       if (error.message !== 'Command failed: npm outdated --json') reject(error);
       if (error.status !== 1) reject(error);
 
@@ -23,7 +38,11 @@ export const createOutdatedRequest = (): Function => {
 };
 
 
-export const createDetailsRequest = (dependencyName: string): Function => {
+/**
+ * Creates a function to run the `npm view` command for a specific dependency
+ * @param dependencyName
+ */
+export const createDetailsRequest = (dependencyName: string): DetailsRequest => {
   const command = process.platform === 'win32' ? 'npm.cmd' : 'npm';
   const args = ['view', '--json', dependencyName];
 
