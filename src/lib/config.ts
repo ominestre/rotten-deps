@@ -8,7 +8,7 @@ interface Rule {
   readonly daysUntilExpiration: number;
 }
 
-interface Config {
+export interface Config {
   readonly rules: Rule[];
 }
 

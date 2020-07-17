@@ -35,11 +35,11 @@ describe('NPM Interaction Library', () => {
     restorePlatform();
   });
 
-  it('Should prepare a request for NPM outdate', async () => {
+  xit('Should prepare a request for NPM outdate', async () => {
     const getOutdatedRequest = npmLib.createOutdatedRequest();
     const response = await getOutdatedRequest();
     assert(typeof response === 'object');
-  }).timeout(5000);
+  });
 
   it('Should prepare a request for NPM view', async () => {
     const getDetailsRequest = npmLib.createDetailsRequest('express');

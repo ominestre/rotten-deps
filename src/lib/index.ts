@@ -1,7 +1,10 @@
 import { createFileReader, createConfig, hasValidRules } from './config';
 import { createOutdatedRequest, createDetailsRequest } from './npm-interactions';
 
-interface ReportData {
+import type { Config } from './config';
+import type { OutdatedPackage } from './npm-interactions';
+
+export interface ReportData {
   name: string,
   current: string,
   latest: string,
@@ -9,54 +12,44 @@ interface ReportData {
   isOutdated: boolean,
 }
 
-interface OutdatedDependency {
-  current: string,
-  wanted: string,
-  latest: string,
-  location: string,
-}
-
-const Maybe = function (x) { this._value = x; };
-Maybe.of = (x) => new Maybe(x);
-Maybe.prototype.map = function (f) { return Maybe.of(f(this._value)); };
-Maybe.prototype.isError = function () { return this._value instanceof Error; };
-Maybe.prototype.flatten = function () { return this._value; };
-
-// generateReport( config: object ) => Maybe()
-export const generateReport = async (config) => {
+export const generateReport = async (config: Config): Promise<ReportData[]|Error> => {
   const isValid = hasValidRules(config.rules);
 
-  if (!isValid) return Maybe.of(new Error('Configuration contains invalid rules'));
+  if (!isValid) return new Error('Configuration contains invalid rules');
 
   const getOutdated = createOutdatedRequest();
-  let outdated: object;
+  const outdated = await getOutdated();
 
-  try {
-    outdated = await getOutdated();
-  } catch (err) {
-    return Maybe.of(err);
-  }
+  if (outdated instanceof Error) return outdated;
 
   try {
     const reportData = [];
 
-    Object.entries(outdated).forEach(async (val) => {
-      const [name, desiredDetails]: [string, OutdatedDependency] = val;
+    Object.entries(outdated).forEach(async (x) => {
+      const [name, desiredDetails]: [string, OutdatedPackage] = x;
       const getDetails = createDetailsRequest(name);
-      const { time } = await getDetails();
-      const currentTime = time[desiredDetails.current];
-      const latestTime = time[desiredDetails.latest];
-      const currentDay = new Date(currentTime).getTime();
-      const latestDay = new Date(latestTime).getTime();
-      // 86400000 is the amount of milliseconds in a day
-      const daysOutdated = Math.floor((latestDay - currentDay) / 86400000);
+      const details = await getDetails();
 
-      let isOutdated: boolean;
+      if (details instanceof Error) return details;
 
+      // it's the time prop in the npm response but it's a collection of versions and dates
+      const { time: versions } = details;
+      const currentVersion = versions[desiredDetails.current];
+      const latestVersion = versions[desiredDetails.latest];
+      const currentDate = new Date(currentVersion);
+      const latestDate = new Date(latestVersion);
+      const currentTime = currentDate.getTime();
+      const latestTime = latestDate.getTime();
+
+      // 86400000 represents the amount of milliseconds in a day
+      const daysOutdated = Math.floor((latestTime - currentTime) / 86400000)
+
+      let isOutdated = false;
+
+      // TODO https://github.com/ominestre/rotten-deps/issues/5
       if (!config.rules[name]) isOutdated = true;
-      else if (config.rules[name].ignore) isOutdated = false;
       else if (config.rules[name].daysUntilExpiration < daysOutdated) isOutdated = true;
-      else isOutdated = false;
+      else if (config.rules[name].ignore) isOutdated = false;
 
       reportData.push({
         name,
@@ -67,9 +60,9 @@ export const generateReport = async (config) => {
       });
     });
 
-    return Maybe.of(reportData);
+    return reportData;
   } catch (err) {
-    return Maybe.of(err);
+    return err;
   }
 };
 
