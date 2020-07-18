@@ -9,6 +9,7 @@ describe('Configuration library', () => {
 
     fileRequest()
       .then(data => {
+        // @ts-ignore
         const json = JSON.parse(data);
         assert.deepEqual(json, { foo: 0 });
         done();
@@ -16,29 +17,57 @@ describe('Configuration library', () => {
   });
 
   it('Should validate each rule from the user config', () => {
-    assert.isTrue(configLib.hasValidRules([
-      { dependencyName: 'foo', ignore: false, daysUntilExpiration: 30 },
-      { dependencyName: 'bar', ignore: true, daysUntilExpiration: 0 },
-    ]));
+    // TODO should also test the contents of the errors to check correct messaging
+    const a = configLib.createConfig({
+      rules: [
+        { dependencyName: 'foo', ignore: false, daysUntilExpiration: 30 },
+        { dependencyName: 'bar', ignore: true, daysUntilExpiration: 0 },
+      ],
+    });
 
-    assert.isNotTrue(configLib.hasValidRules([
-      { dependencyName: 'foo', ignore: true, daysUntilExpiration: 300 },
-      { dependencyName: null, ignore: true, daysUntilExpiration: 9001 },
-    ]));
+    assert.equal(a.kind, 'config');
 
-    assert.isNotTrue(configLib.hasValidRules([
-      { dependencyName: 'foo', ignore: 'maybe', daysUntilExpiration: 30 },
-    ]));
+    const b = configLib.createConfig({
+      rules: [
+        { dependencyName: 'foo', ignore: true, daysUntilExpiration: 300 },
+        { dependencyName: null, ignore: true, daysUntilExpiration: 9001 },
+      ],
+    });
 
-    assert.isNotTrue(configLib.hasValidRules([
-      { dependencyName: 'banana', ignore: true, daysUntilExpiration: 'thirteen' },
-    ]));
+    assert.equal(b.kind, 'error');
+
+    const c = configLib.createConfig({
+      rules: [
+        // @ts-ignore intentionally passing bad type
+        { dependencyName: 'foo', ignore: 'maybe', daysUntilExpiration: 30 },
+      ],
+    });
+
+    assert.equal(c.kind, 'error');
+
+    const d = configLib.createConfig({
+      rules: [
+        // @ts-ignore intentionally passing bad type
+        { dependencyName: 'banana', ignore: true, daysUntilExpiration: 'thirteen' },
+      ],
+    });
+
+    assert.equal(d.kind, 'error');
   });
 
-  it('Should create a standard config object', () => {
-    const { createConfig } = configLib;
-    assert.deepEqual(createConfig({ foo: 1, bar: 2 }), { rules: [], foo: 1, bar: 2 });
-    assert.deepEqual(createConfig({}), { rules: [] });
-    assert.deepEqual(createConfig({ rules: ['one'], foo: 0 }), { rules: ['one'], foo: 0 });
+  it('Should default ignore to false if it is not specified', () => {
+    const rules = [
+      { dependencyName: 'trevorforget', daysUntilExpiration: 9000 },
+      { dependencyName: 'banana', ignore: true, daysUntilExpiration: 13 },
+    ];
+
+    const { kind, ...maybeConfig } = configLib.createConfig({ rules });
+    assert.equal(kind, 'config');
+    assert.deepEqual(maybeConfig, {
+      rules: [
+        { dependencyName: 'trevorforget', ignore: false, daysUntilExpiration: 9000 },
+        { dependencyName: 'banana', ignore: true, daysUntilExpiration: 13 },
+      ],
+    });
   });
 });

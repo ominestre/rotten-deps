@@ -10,6 +10,7 @@ import { existsSync } from 'fs';
 import { configuration, generateReport } from '../lib/index';
 
 import type { ReportData } from '../lib/index';
+import type { Config } from '../lib/config';
 
 const { argv } = yargs
   .scriptName('rotten-deps')
@@ -29,7 +30,7 @@ const maestro = (configPath: string): void => {
     resolve(JSON.parse(x));
   });
 
-  const buildConfigObject = (x: object): Promise<object> => new Promise(resolve => {
+  const buildConfigObject = (x: Config): Promise<object> => new Promise(resolve => {
     resolve(configuration.createConfig(x));
   });
 
