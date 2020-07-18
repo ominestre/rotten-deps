@@ -26,15 +26,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn install
       - run: yarn run build
-  audit:
-    needs: build
-    steps:
       - run: yarn audit
-  test:
-    needs: build
-    steps:
       - run: yarn test
-  outdated:
-    needs: build
-    steps:
       - run: yarn outdated
