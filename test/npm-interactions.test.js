@@ -39,12 +39,12 @@ describe('NPM Interaction Library', () => {
     const getOutdatedRequest = npmLib.createOutdatedRequest();
     const response = await getOutdatedRequest();
     assert(typeof response === 'object');
-  }).timeout(4000);
+  }).timeout(8000);
 
   it('Should prepare a request for NPM view', async () => {
     const getDetailsRequest = npmLib.createDetailsRequest('express');
     const response = await getDetailsRequest();
     assert.equal(response.name, 'express');
-  }).timeout(4000);
+  }).timeout(8000);
 });
 
