@@ -1,5 +1,7 @@
 # rotten deps
 
+![Node.js CI](https://github.com/ominestre/rotten-deps/workflows/Node.js%20CI/badge.svg)
+
 The command `npm outdated` only has two endpoints which are pass or fail. This dichotomy isn't very useful for CI
 flows which have pass, fail, or warn. This CLI utility combines `npm outdated` and `npm view` in order to establish
 a compliance period for dependency checks. This way if a dependency update is within your compliance period you can
