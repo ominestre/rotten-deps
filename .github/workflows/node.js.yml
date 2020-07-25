@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - '*'
+      - '!master'
   pull_request:
     branches: [ master ]
   schedule:
@@ -19,13 +20,31 @@ jobs:
       matrix:
         node-version: [10.x, 12.x, 14.x]
     steps:
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: build/run/test node ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - uses: actions/checkout@v2
       - run: yarn install
       - run: yarn run build
-      - run: yarn audit
       - run: yarn test
-      # - run: yarn outdated
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: check yarn audit
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - uses: actions/checkout@v2
+      - run: yarn audit
+  outdated:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: check yarn outdated
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - uses: actions/checkout@v2
+      - run: yarn outdated
+  
