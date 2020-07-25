@@ -1,0 +1,14 @@
+{
+  "rules": [
+    {
+      "dependencyName": "mocha",
+      "ignore": false,
+      "daysUntilExpiration": 30
+    },
+    {
+      "dependencyName": null,
+      "ignore": false,
+      "daysUntilExpiration": 9000
+    }
+  ]
+}

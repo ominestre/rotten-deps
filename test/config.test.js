@@ -27,32 +27,32 @@ describe('Configuration library', () => {
 
     assert.equal(a.kind, 'config');
 
-    const b = configLib.createConfig({
+    const b = configLib.createConfig.bind(null, {
       rules: [
         { dependencyName: 'foo', ignore: true, daysUntilExpiration: 300 },
         { dependencyName: null, ignore: true, daysUntilExpiration: 9001 },
       ],
     });
 
-    assert.equal(b.kind, 'error');
+    assert.throws(b, /Configuration file contains invalid config/);
 
-    const c = configLib.createConfig({
+    const c = configLib.createConfig.bind(null, {
       rules: [
         // @ts-ignore intentionally passing bad type
         { dependencyName: 'foo', ignore: 'maybe', daysUntilExpiration: 30 },
       ],
     });
 
-    assert.equal(c.kind, 'error');
+    assert.throws(c, /Configuration file contains invalid config/);
 
-    const d = configLib.createConfig({
+    const d = configLib.createConfig.bind(null, {
       rules: [
         // @ts-ignore intentionally passing bad type
         { dependencyName: 'banana', ignore: true, daysUntilExpiration: 'thirteen' },
       ],
     });
 
-    assert.equal(d.kind, 'error');
+    assert.throws(d, /Configuration file contains invalid config/);
   });
 
   it('Should default ignore to false if it is not specified', () => {

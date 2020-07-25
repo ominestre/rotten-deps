@@ -1,5 +1,6 @@
 import * as util from 'util';
 import * as fs from 'fs';
+import * as Table from 'cli-table';
 
 
 interface Rule {
@@ -39,9 +40,7 @@ interface ErrorReport {
   readonly error: Error;
 }
 
-type MaybeConfig = Config | ErrorReport;
 type MaybeRules = ParsedRules | ErrorReport;
-
 
 export const parseRules = ({ rules }): MaybeRules => {
   let problems: Problem[] = [];
@@ -49,6 +48,7 @@ export const parseRules = ({ rules }): MaybeRules => {
   let parsedRules: Rule[] = [];
 
   rules.forEach(({ dependencyName, ignore = false, daysUntilExpiration = 0 }, i) => {
+    const ruleNumber = i + 1;
     let rule = {
       dependencyName,
       ignore,
@@ -61,7 +61,7 @@ export const parseRules = ({ rules }): MaybeRules => {
     if (typeof dependencyName !== 'string' || dependencyName.length <= 0) {
       isRuleValid = false;
       issues.push({
-        error: `Rule ${i} is missing required field dependencyName`,
+        error: `Rule ${ruleNumber} is missing required field dependencyName`,
         recommendation: 'You must provide a dependency name of type string',
       });
     }
@@ -69,7 +69,7 @@ export const parseRules = ({ rules }): MaybeRules => {
     if (typeof ignore !== 'boolean') {
       isRuleValid = false;
       issues.push({
-        error: `Rule ${i} has a type mismatch for ignore`,
+        error: `Rule ${ruleNumber} has a type mismatch for ignore`,
         recommendation: 'The ignore field must be of type boolean',
       });
     }
@@ -77,7 +77,7 @@ export const parseRules = ({ rules }): MaybeRules => {
     if (typeof daysUntilExpiration !== 'number') {
       isRuleValid = false;
       issues.push({
-        error: `Rule ${i} has a type mismatch for daysUntilExpiration`,
+        error: `Rule ${ruleNumber} has a type mismatch for daysUntilExpiration`,
         recommendation: 'The daysUntilExpiration field must be of type number',
       })
     }
@@ -97,7 +97,7 @@ export const parseRules = ({ rules }): MaybeRules => {
     kind: 'error',
     message: 'Configuration file contains invalid config',
     report: problems,
-    error: new Error('Configuration contains invalid config'),
+    error: new Error('Configuration file contains invalid config'),
   };
 
   return {
@@ -107,11 +107,23 @@ export const parseRules = ({ rules }): MaybeRules => {
 }
 
 
-export const createConfig = (config: Config): MaybeConfig => {
+export const createConfig = (config: Config): Config => {
   const maybeRules = parseRules(config);
   switch (maybeRules.kind) {
     case 'error':
-      return maybeRules;
+      const table = new Table({
+        head: ['dependency', 'issue', 'recommendation'],
+      });
+
+      maybeRules.report.forEach(x => {
+        const dep = String(x.dependencyName);
+        x.issues.forEach(y => {
+          table.push([dep, y.error, y.recommendation])
+        });
+      });
+
+      console.log(table.toString());
+      throw maybeRules.error;
     case 'rules':
       return {
         kind: 'config',
