@@ -9,6 +9,7 @@
     "build": "npm run clean && tsc",
     "start": "npm run build && node ./bin/rotten-deps --config-path ./sample-config.json",
     "clean": "rimraf ./lib ./bin",
+    "pretest": "(cd test/dummies/sample-app && npm install)",
     "test": "mocha -r ts-node/register"
   },
   "author": {

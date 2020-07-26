@@ -1,3 +1,6 @@
+# ignores the package lock for the sample app
+test/dummies/sample-app/package-lock.json
+
 # lib and bin are compiled TS output
 lib/
 bin/
