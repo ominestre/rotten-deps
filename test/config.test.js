@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import * as path from 'path';
+import * as sinon from 'sinon';
 import configLib from '../src/lib/config';
 
 describe('Configuration library', () => {
@@ -17,6 +18,8 @@ describe('Configuration library', () => {
   });
 
   it('Should validate each rule from the user config', () => {
+    sinon.stub(console, 'log');
+
     // TODO should also test the contents of the errors to check correct messaging
     const a = configLib.createConfig({
       rules: [
@@ -53,6 +56,8 @@ describe('Configuration library', () => {
     });
 
     assert.throws(d, /Configuration file contains invalid config/);
+
+    sinon.restore();
   });
 
   it('Should default ignore to false if it is not specified', () => {
