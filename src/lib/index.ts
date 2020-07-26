@@ -43,12 +43,12 @@ export const generateReport = async (c: Config): Promise<ReportData[]|Error> => 
       // 86400000 represents the amount of milliseconds in a day
       const daysOutdated = Math.floor((latestTime - currentTime) / 86400000)
 
-      let isOutdated = false;
-
-      // TODO https://github.com/ominestre/rotten-deps/issues/5
-      if (!rules[name]) isOutdated = true;
-      else if (rules[name].daysUntilExpiration < daysOutdated) isOutdated = true;
-      else if (rules[name].ignore) isOutdated = false;
+      let isOutdated = true;
+      rules.forEach(rule => {
+        if (rule.dependencyName !== name) return;
+        if (rule.daysUntilExpiration > daysOutdated) isOutdated = false;
+        if (rule.ignore) isOutdated = false;
+      });
 
       reportData.push({
         name,
