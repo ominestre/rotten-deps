@@ -10,6 +10,7 @@ export interface ReportData {
   latest: string,
   daysOutdated: number,
   isOutdated: boolean,
+  isIgnored: boolean,
 }
 
 export const generateReport = async (c: Config): Promise<ReportData[]|Error> => {
@@ -43,12 +44,17 @@ export const generateReport = async (c: Config): Promise<ReportData[]|Error> => 
       // 86400000 represents the amount of milliseconds in a day
       const daysOutdated = Math.floor((latestTime - currentTime) / 86400000)
 
-      let isOutdated = true;
-      rules.forEach(rule => {
-        if (rule.dependencyName !== name) return;
-        if (rule.daysUntilExpiration > daysOutdated) isOutdated = false;
-        if (rule.ignore) isOutdated = false;
-      });
+      let isOutdated = false;
+      let isIgnored = false;
+
+      const rule = rules.filter(x => x.dependencyName === name).shift();
+
+      if (!rule) isOutdated = true;
+      if (rule && rule.daysUntilExpiration <= daysOutdated) isOutdated = true
+      if (rule && rule.ignore) {
+        isIgnored = true;
+        isOutdated = false;
+      }
 
       reportData.push({
         name,
@@ -56,6 +62,7 @@ export const generateReport = async (c: Config): Promise<ReportData[]|Error> => 
         latest: desiredDetails.latest,
         daysOutdated,
         isOutdated,
+        isIgnored,
       });
     });
 
