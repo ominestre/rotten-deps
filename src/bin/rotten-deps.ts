@@ -48,8 +48,10 @@ const maestro = (configPath: string): void => {
       latest,
       daysOutdated,
       isOutdated,
+      isIgnored,
     }) => {
-      table.push([name, current, latest, daysOutdated, isOutdated]);
+      const outdated = isIgnored ? 'ignored' : isOutdated;
+      table.push([name, current, latest, daysOutdated, outdated]);
     });
 
     resolve(table.toString());
