@@ -1,3 +1,16 @@
+## v1.0.0-beta.11
+#### feature
+* adds exit codes for pass, fail, and warn to the CLI
+
+#### minor
+* adds `isStale` check for dependencies
+
+#### infrastructure and tooling
+* upped timeouts for api tests again
+* configures mocha for using `.ts` files
+* updates tsconfig type config to use mocha and chai types
+* configures build to run prior to testing
+
 ## v1.0.0-beta.10
 #### feature
 * indicates in CLI report if a dependency was ignored
