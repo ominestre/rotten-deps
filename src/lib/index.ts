@@ -5,12 +5,13 @@ import type { Config } from './config';
 import type { OutdatedPackage } from './npm-interactions';
 
 export interface ReportData {
-  name: string,
-  current: string,
-  latest: string,
-  daysOutdated: number,
-  isOutdated: boolean,
-  isIgnored: boolean,
+  readonly name: string,
+  readonly current: string,
+  readonly latest: string,
+  readonly daysOutdated: number,
+  readonly isOutdated: boolean,
+  readonly isIgnored: boolean,
+  readonly isStale: boolean,
 }
 
 export const generateReport = async (c: Config): Promise<ReportData[]|Error> => {
@@ -46,11 +47,15 @@ export const generateReport = async (c: Config): Promise<ReportData[]|Error> => 
 
       let isOutdated = false;
       let isIgnored = false;
+      let isStale = false;
 
       const rule = rules.filter(x => x.dependencyName === name).shift();
 
       if (!rule) isOutdated = true;
-      if (rule && rule.daysUntilExpiration <= daysOutdated) isOutdated = true
+
+      if (rule && rule.daysUntilExpiration <= daysOutdated) isOutdated = true;
+      if (rule && rule.daysUntilExpiration > daysOutdated) isStale = true;
+
       if (rule && rule.ignore) {
         isIgnored = true;
         isOutdated = false;
@@ -63,6 +68,7 @@ export const generateReport = async (c: Config): Promise<ReportData[]|Error> => 
         daysOutdated,
         isOutdated,
         isIgnored,
+        isStale,
       });
     });
 

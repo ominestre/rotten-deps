@@ -6,9 +6,14 @@
       "daysUntilExpiration": 30
     },
     {
+      "dependencyName": "chai",
+      "ignore": true,
+      "daysUntilExpiration": 2000000
+    },
+    {
       "dependencyName": "left-pad",
-      "ignore": false,
-      "daysUntilExpiration": 9000
+      "ignore": true,
+      "daysUntilExpiration": 99999999999
     }
   ]
 }

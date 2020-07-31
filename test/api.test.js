@@ -26,13 +26,30 @@ describe('API integrations', () => {
 
     if (maybeReport instanceof Error) throw maybeReport;
 
-    const leftPadLOL = maybeReport.filter(x => x.name === 'left-pad')[0];
+    const filter = name => maybeReport.filter(x => x.name === name).shift();
+    const leftPadLOL = filter('left-pad');
+    const mocha = filter('mocha');
+    const chai = filter('chai');
 
     assert.equal(leftPadLOL.name, 'left-pad');
     assert.equal(leftPadLOL.current, '1.2.0');
     assert.isTrue(leftPadLOL.daysOutdated < 9000, 'Days Outdated should be less than 9000');
     assert.isFalse(leftPadLOL.isOutdated, 'left-pad should not be flagged as outdated');
-  }).timeout(8000);
+    assert.isTrue(leftPadLOL.isStale, 'left-pad 1.2 should be flagged as stale since 1.3 is latest');
+
+    assert.equal(mocha.name, 'mocha');
+    assert.equal(mocha.current, '2.5.3');
+    assert.isTrue(mocha.isIgnored);
+    assert.isFalse(mocha.isOutdated);
+    assert.isFalse(mocha.isStale);
+
+    assert.equal(chai.name, 'chai');
+    assert.equal(chai.current, '1.8.1');
+    assert.isTrue(chai.daysOutdated > 1800);
+    assert.isTrue(chai.isOutdated);
+    assert.isFalse(chai.isIgnored);
+    assert.isFalse(chai.isStale);
+  }).timeout(20000);
 
   /*  Sitting on this one because you should just be using npm or yarn outdated.
       Not sure I want to support this scenario */
