@@ -7,82 +7,35 @@ flows which have pass, fail, or warn. This CLI utility combines `npm outdated` a
 a compliance period for dependency checks. This way if a dependency update is within your compliance period you can
 trigger a warn or if it's beyond your compliance period it can trigger a fail.
 
+## Installation
+
+Most usecases you will want to install this as a project dependency using `yarn add --dev @ominestre/rotten-deps` or `npm i --save-dev @ominestre/rotten-deps`.
+Then you can create a task in `package.json` to run. You can use `rotten-deps --help` or checkout the CLI section before for options.
+
+## Config File
+
+TBD
+
+## CLI
+
+### Options
+
+#### `--config-path <string>`
+
+Specifies a path to your configuration file
+
+#### `--json`
+
+The output will be json instead of a table. Useful if you're consuming this output programmatically.
+
+### Exit Code Meanings
+
+* `0` indicates that no depedencies are stale or outdated
+* `1` indicates that you have outdated dependencies
+* `2` indicates that you have stale dependencies but no outdated
+
+You can use this in various CI pips to flag the task as good, warn, or fail.
+
 ## API
 
-### configuration.createFileReader( absoluteFilePath: string ) => function
-
-Creates a wrapper of `fs.readFileSync` using the provided absolute path for execution down
-the road.
-
-```javascript
-import { configuration } from '@ominestre/rotten-deps';
-
-const foo = async () => {
-  const reader = configuration.createFileReader('/some/absolute/path');
-  const data = await reader();
-  // do stuff with data
-}
-```
-
----
-
-### configuration.creatConfig( userConfig = {} ) => object
-
-Builds a user configuration object **without any validation** by taking a default config and
-overlaying the provided user config.
-
----
-
-### configuration.hasValidRules( rules: Rule[] ) => boolean
-
-```javascript
-type Rule = {
-  dependencyName: string,
-  ingore: boolean,
-  daysUntilExpiration: number
-}
-```
-
-Checks to make sure the configured rules match the expected type above
-
----
-
-### npm.createOutdatedRequest() => function() => Promise<object>
-
-Creates a deferred call to `npm outdated --json` that can be invoked later. The inner function
-returns a promise which handles a successful list of outdated dependencies resulting in a
-failed command. It will either resolve an object or bubble up any valid exceptions in running
-the command.
-
-```javascript
-import { npm } from '@ominestre/rotten-deps';
-
-const foo = async () => {
-  const getOutdatedRequest = npm.createOutdatedRequest();
-
-  try {
-    const data = getOutdatedRequest();
-    // do stuff with response
-  } catch (err) {
-    // put out the fire
-  }
-};
-```
-
----
-
-### npm.createDetailsRequest( dependencyName: string ) => function() => Promise<object>
-
-Creates a deferred call to `npm view --json X` where `X` is a dependency name.
-
-```javascript
-import { npm } from '@ominestre/rotten-deps';
-
-const foo = async () => {
-  const getDetails = createDetailsRequest('@foo/bar');
-  const dependencyInfo = await getDetails();
-  // do stuff with info
-};
-```
-
----
+TBD

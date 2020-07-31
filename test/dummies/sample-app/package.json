@@ -9,6 +9,7 @@
   "author": "",
   "license": "UNLICENSED",
   "devDependencies": {
+    "chai": "1.8.1",
     "mocha": "2.5.3"
   },
   "dependencies": {
