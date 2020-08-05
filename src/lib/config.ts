@@ -1,6 +1,6 @@
-import * as util from 'util';
-import * as fs from 'fs';
 import * as Table from 'cli-table';
+import { readFile } from 'fs';
+import { promisify } from 'util';
 
 
 interface Rule {
@@ -10,6 +10,7 @@ interface Rule {
 }
 
 export interface Config {
+  defaultExpiration?: number;
   readonly kind?: 'config';
   readonly rules: Rule[];
 }
@@ -140,7 +141,7 @@ export const createConfig = (config: Config): Config => {
  * @param absoluteFilePath absolute path to the configuration file
  */
 export const createFileReader = (absoluteFilePath: string): FileReader => {
-  const readFilePromise = util.promisify(fs.readFile);
+  const readFilePromise = promisify(readFile);
   return readFilePromise.bind(null, absoluteFilePath, { encoding: 'utf8' });
 };
 

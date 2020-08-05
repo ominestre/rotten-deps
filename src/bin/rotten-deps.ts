@@ -4,7 +4,6 @@ import * as yargs from 'yargs';
 import {
   isAbsolute,
   resolve as pathResolve,
-  resolve,
 } from 'path';
 import * as Table from 'cli-table';
 import { existsSync } from 'fs';
@@ -28,7 +27,6 @@ const { argv } = yargs
   .scriptName('rotten-deps')
   .usage('$0 [options]')
   .option('config-path', {
-    demandOption: true,
     description: 'path to rotten-deps configuration file',
     type: 'string',
   })
@@ -36,17 +34,17 @@ const { argv } = yargs
     description: 'output will be json instead of table',
     boolean: true,
     requiresArg: false,
+  })
+  .option('default-expiration', {
+    description: `sets a default grace period for all dependencies. this cannot be used with a configuration file.
+      you should specifiy this there instead`,
+    type: 'number',
+    conflicts: 'config-path',
   });
 
 if (argv.help) yargs.showHelp();
 
-const maestro = (configPath: string): void => {
-  const configReader = configuration.createFileReader(configPath);
-
-  const processConfigData = (x: string): Promise<Config> => new Promise(resolve => {
-    resolve(JSON.parse(x));
-  });
-
+const maestro = (config: Config): void => {
   const buildConfigObject = (x: Config): Promise<Config> => new Promise(resolve => {
     resolve(configuration.createConfig(x));
   });
@@ -88,20 +86,35 @@ const maestro = (configPath: string): void => {
     process.exit(status);
   }
 
-  configReader()
-    .then(processConfigData)
-    .then(buildConfigObject)
+  buildConfigObject(config)
     .then(generateReport)
     .then(processReport)
     .then(shoutReport);
 };
 
 const configPath = argv['config-path'];
+const defaultExpiration = argv['default-expiration'];
 
-if (isAbsolute(configPath)) {
-  maestro(configPath);
-} else {
+const configParser = (raw: string): Promise<Config> => new Promise(resolve => resolve(JSON.parse(raw)));
+
+if (configPath && isAbsolute(configPath)) {
+  const configReader = configuration.createFileReader(configPath);
+  configReader()
+    .then(configParser)
+    .then(maestro);
+} else if (configPath) {
   const maybePath = pathResolve(configPath);
   if (!existsSync(maybePath)) yargs.exit(1, new Error(`${configPath} could not be resolved from configuration`));
-  maestro(maybePath);
+  const configReader = configuration.createFileReader(configPath);
+  configReader()
+    .then(configParser)
+    .then(maestro);
+} else {
+  let config: Config = {
+    rules: [],
+  };
+
+  if (defaultExpiration) config.defaultExpiration = defaultExpiration;
+
+  maestro(config);
 }
