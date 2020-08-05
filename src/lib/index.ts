@@ -52,7 +52,7 @@ export const generateReport = async (c: Config): Promise<ReportData[]|Error> => 
       const rule = rules.filter(x => x.dependencyName === name).shift();
 
       if (!rule) isOutdated = true;
-
+      if (!rule && config.defaultExpiration > daysOutdated) isOutdated = false;
       if (rule && rule.daysUntilExpiration <= daysOutdated) isOutdated = true;
       if (rule && rule.daysUntilExpiration > daysOutdated) isStale = true;
 

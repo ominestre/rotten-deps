@@ -28,6 +28,10 @@ Specifies a path to your configuration file
 
 The output will be json instead of a table. Useful if you're consuming this output programmatically.
 
+#### `--default-expiration <number>`
+
+This will set a default grace period for expiration to all depedencies not defined in rules. If a dependency is defined within the rules that setting takes priority.
+
 ### Exit Code Meanings
 
 * `0` indicates that no depedencies are stale or outdated
