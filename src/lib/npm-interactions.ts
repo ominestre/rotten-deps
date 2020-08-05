@@ -2,6 +2,7 @@ import * as proc from 'child_process';
 
 interface PackageDetails {
   time?: object;
+  name?: string;
 }
 
 export interface OutdatedPackage {
