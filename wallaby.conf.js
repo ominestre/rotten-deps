@@ -1,4 +1,4 @@
-module.exports = (wallaby) => ({
+module.exports = () => ({
   testFramework: 'mocha',
   files: [
     'src/lib/*.ts',
@@ -15,8 +15,5 @@ module.exports = (wallaby) => ({
     params: {
       runner: `-r ${require.resolve('esm')}`,
     },
-  },
-  compilers: {
-    '**/*.js': wallaby.compilers.babel(),
   },
 });
