@@ -1,3 +1,11 @@
+## v1.0.0-beta.12
+#### feature
+* allows CLI usage without a config file by specifying a default grace period for expiration
+
+#### infrastructure and tooling
+* converted remaining tests to typescript and dropped babel as a dev dependency since it was no longer needed
+* updated dependencies
+
 ## v1.0.0-beta.11
 #### feature
 * adds exit codes for pass, fail, and warn to the CLI
