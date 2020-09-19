@@ -1,8 +1,8 @@
 import * as proc from 'child_process';
 
 interface PackageDetails {
-  time?: object;
-  name?: string;
+  time: Record<string, string>;
+  name: string;
 }
 
 export interface OutdatedPackage {
@@ -58,7 +58,7 @@ export const createDetailsRequest = (dependencyName: string): DetailsRequest => 
   const command = process.platform === 'win32' ? 'npm.cmd' : 'npm';
   const args = ['view', '--json', dependencyName];
 
-  return (): Promise<object> => new Promise(resolve => {
+  return (): Promise<PackageDetails | Error> => new Promise(resolve => {
     try {
       const response = proc.execFileSync(command, args, { encoding: 'utf8' });
       resolve(JSON.parse(response));
