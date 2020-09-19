@@ -2,11 +2,7 @@ import { spawnSync } from 'child_process';
 import { join } from 'path';
 import { assert } from 'chai';
 
-interface CommandResponse {
-  status: number;
-  stdout: string;
-  stderr: string;
-}
+import type { PackageDetails } from '../src/lib/npm-interactions';
 
 type ConfigName = 'rules-only-config.json' | 'only-stale.json' | 'no-outdated.json';
 
@@ -15,7 +11,7 @@ const rotten = ({
   enableJSON = false,
   configFileName = '',
   defaultDays = 0,
-}): CommandResponse => {
+}) => {
   const configPath = join(__dirname, `dummies/${configFileName}`);
   const dummyApp = join(__dirname, 'dummies/sample-app/');
   const binaryPath = join(__dirname, '../bin/rotten-deps');
@@ -64,7 +60,7 @@ describe('CLI', () => {
   it('should output raw json when the json flag is passed', async () => {
     const { stdout } = await rotten({ configFileName: 'rules-only-config.json', enableJSON: true});
     const json = JSON.parse(stdout);
-    const chai = json.filter(x => x.name === 'chai').shift();
+    const chai = json.filter((x: PackageDetails) => x.name === 'chai').shift();
     assert.equal(chai.name, 'chai');
     assert.isFalse(chai.isIgnored);
     assert.isTrue(chai.isOutdated);

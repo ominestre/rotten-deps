@@ -33,6 +33,7 @@ describe('Configuration library', () => {
     const b = configLib.createConfig.bind(null, {
       rules: [
         { dependencyName: 'foo', ignore: true, daysUntilExpiration: 300 },
+        // @ts-ignore intentionally passing bad values
         { dependencyName: null, ignore: true, daysUntilExpiration: 9001 },
       ],
     });

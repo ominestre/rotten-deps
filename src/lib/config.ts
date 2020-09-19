@@ -1,6 +1,5 @@
 import Table from 'cli-table';
-import { readFile } from 'fs';
-import { promisify } from 'util';
+import { readFileSync } from 'fs';
 
 
 interface Rule {
@@ -16,7 +15,7 @@ export interface Config {
 }
 
 interface FileReader {
-  (): Promise<String>;
+  (): Promise<string>;
 }
 
 interface Issue {
@@ -43,7 +42,14 @@ interface ErrorReport {
 
 type MaybeRules = ParsedRules | ErrorReport;
 
-export const parseRules = ({ rules }): MaybeRules => {
+
+/**
+ * reviews each rule of a configuration to determine validity
+ * generates a report of violations with recommendations on how to resolve
+ * @param config rotten deps configuration object
+ */
+const parseRules = (config: Config): MaybeRules => {
+  const { rules } = config;
   let problems: Problem[] = [];
   let isValidConfig = true;
   let parsedRules: Rule[] = [];
@@ -108,6 +114,11 @@ export const parseRules = ({ rules }): MaybeRules => {
 }
 
 
+/**
+ * Validates a raw configuration file and generates a report if any rules are
+ * misconfigured.
+ * @param config rotten deps configuration object
+ */
 export const createConfig = (config: Config): Config => {
   const maybeRules = parseRules(config);
   switch (maybeRules.kind) {
@@ -141,8 +152,10 @@ export const createConfig = (config: Config): Config => {
  * @param absoluteFilePath absolute path to the configuration file
  */
 export const createFileReader = (absoluteFilePath: string): FileReader => {
-  const readFilePromise = promisify(readFile);
-  return readFilePromise.bind(null, absoluteFilePath, { encoding: 'utf8' });
+  return async () => {
+    const data = readFileSync(absoluteFilePath, { encoding: 'utf-8' });
+    return String(data);
+  }
 };
 
 
