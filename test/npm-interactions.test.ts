@@ -7,7 +7,8 @@ import npmLib from '../src/lib/npm-interactions';
  * `Object.defineProperty` method
  * @param {string} platform
  */
-const setProcessPlatform = platform => () => Object.defineProperty(process, 'platform', { value: platform });
+const setProcessPlatform = (platform: string) =>
+  () => Object.defineProperty(process, 'platform', { value: platform });
 
 const defaultPlatform = process.platform;
 const restorePlatform = setProcessPlatform(defaultPlatform);

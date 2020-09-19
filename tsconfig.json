@@ -9,12 +9,15 @@
       "yargs",
       "mocha"
     ],
-    "outDir": "./",
+    "outDir": "./build",
     "allowJs": true,
-    "target": "ES5"
+    "target": "ES5",
+    "strict": true,
+    "alwaysStrict": true,
   },
   "include": [
-    "./src/**/*"
+    "./src/**/*",
+    "./test/**/*",
   ],
   "exclude": []
 }

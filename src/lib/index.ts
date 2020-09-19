@@ -24,7 +24,7 @@ export const generateReport = async (c: Config): Promise<ReportData[]|Error> => 
   if (outdated instanceof Error) return outdated;
 
   try {
-    const reportData = [];
+    const reportData: ReportData[] = [];
 
     Object.entries(outdated).forEach(async (x) => {
       const [name, desiredDetails]: [string, OutdatedPackage] = x;
@@ -52,9 +52,9 @@ export const generateReport = async (c: Config): Promise<ReportData[]|Error> => 
       const rule = rules.filter(x => x.dependencyName === name).shift();
 
       if (!rule) isOutdated = true;
-      if (!rule && config.defaultExpiration > daysOutdated) isOutdated = false;
-      if (rule && rule.daysUntilExpiration <= daysOutdated) isOutdated = true;
-      if (rule && rule.daysUntilExpiration > daysOutdated) isStale = true;
+      if (!rule && config.defaultExpiration && config.defaultExpiration > daysOutdated) isOutdated = false;
+      if (rule && rule.daysUntilExpiration && rule.daysUntilExpiration <= daysOutdated) isOutdated = true;
+      if (rule && rule.daysUntilExpiration && rule.daysUntilExpiration > daysOutdated) isStale = true;
 
       if (rule && rule.ignore) {
         isIgnored = true;

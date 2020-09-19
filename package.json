@@ -6,7 +6,7 @@
   "bin": "bin/rotten-deps.js",
   "repository": "https://github.com/ominestre/rotten-deps",
   "scripts": {
-    "build": "npm run clean && tsc",
+    "build": "npm run clean && tsc --project tsconfig-build.json",
     "start": "npm run build && node ./bin/rotten-deps --config-path ./sample-config.json",
     "clean": "rimraf ./lib ./bin",
     "pretest": "(cd test/dummies/sample-app && npm install --no-audit) && npm run build",
@@ -18,8 +18,11 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@types/chai": "^4.2.13",
+    "@types/cli-table": "^0.3.0",
     "@types/mocha": "~8.0.3",
     "@types/node": "~14.11.8",
+    "@types/sinon": "^9.0.8",
     "@types/yargs": "~15.0.8",
     "@typescript-eslint/parser": "~4.4.0",
     "chai": "~4.2.0",
