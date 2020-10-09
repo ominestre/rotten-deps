@@ -1,4 +1,4 @@
-import * as Table from 'cli-table';
+import Table from 'cli-table';
 import { readFile } from 'fs';
 import { promisify } from 'util';
 

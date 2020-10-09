@@ -5,7 +5,7 @@ import {
   isAbsolute,
   resolve as pathResolve,
 } from 'path';
-import * as Table from 'cli-table';
+import Table from 'cli-table';
 import { existsSync } from 'fs';
 import { configuration, generateReport } from '../lib/index';
 
