@@ -1,6 +1,6 @@
 *
-!bin/
-!lib/
+!bin/**/*
+!lib/**/*
 !LICENSE
 !package.json
 !package-lock.json
