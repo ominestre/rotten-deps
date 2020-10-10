@@ -1,3 +1,7 @@
+## v1.0.0-beta.15
+#### documentation
+- [@synth3tk](https://github.com/synth3tk) added unit of measurement for clarity on grace period docs
+
 ## v1.0.0-beta.14
 #### documentation
 - fixed incorrect package name in readme
