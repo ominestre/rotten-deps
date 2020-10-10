@@ -37,7 +37,7 @@ Will print the results in JSON format instead of using the CLI table.
 
 Optional: default behavior is to treat any dependency not specified in the config file as being flagged as outdated immediately without a grace period.
 
-This will set a default grace period for expiration to all dependencies not defined in the rules. If a dependency is defined within the rules that setting will take priority.
+This will set a default grace period in number of days for expiration to all dependencies not defined in the rules. If a dependency is defined within the rules that setting will take priority.
 
 ### Exit codes and meanings
 
