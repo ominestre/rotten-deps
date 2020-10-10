@@ -7,11 +7,11 @@ if a dependency update is within your compliance period you can trigger a warn, 
 
 ## Installation
 
-`npm i -g @ominestre/rotten-deps` or `yarn global add @ominestre/rotten-deps` to install this utility globally
+`npm i -g rotten-deps` or `yarn global add rotten-deps` to install this utility globally
 
 - OR -
 
-`npm i --save-dev @ominestre/rotten-deps` or `yarn add --dev @ominestre/rotten-deps` to install it locally in your project.
+`npm i --save-dev rotten-deps` or `yarn add --dev rotten-deps` to install it locally in your project.
 
 ## Usage
 
