@@ -1,3 +1,7 @@
+## v1.0.0-beta.14
+#### documentation
+- fixed incorrect package name in readme
+
 ## v1.0.0-beta.13
 #### tech
 - enables typescript strict mode and resolves any outstanding issues
