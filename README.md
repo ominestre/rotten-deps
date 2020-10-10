@@ -2,44 +2,49 @@
 
 ![Node.js CI](https://github.com/ominestre/rotten-deps/workflows/Node.js%20CI/badge.svg)
 
-The command `npm outdated` only has two endpoints which are pass or fail. This dichotomy isn't very useful for CI
-flows which have pass, fail, or warn. This CLI utility combines `npm outdated` and `npm view` in order to establish
-a compliance period for dependency checks. This way if a dependency update is within your compliance period you can
-trigger a warn or if it's beyond your compliance period it can trigger a fail.
+The command `npm outdated` only has two states, which are pass and fail. This isn't very useful for workflows which would have pass, fail, or warn. This CLI utility combines `npm outdated` and `npm view` in order to establish a compliance period for dependency checks. This way
+if a dependency update is within your compliance period you can trigger a warn, or if it's beyond your compliance period it can trigger a fail.
 
 ## Installation
 
-Most usecases you will want to install this as a project dependency using `yarn add --dev @ominestre/rotten-deps` or `npm i --save-dev @ominestre/rotten-deps`.
-Then you can create a task in `package.json` to run. You can use `rotten-deps --help` or checkout the CLI section before for options.
+`npm i -g @ominestre/rotten-deps` or `yarn global add @ominestre/rotten-deps` to install this utility globally
 
-## Config File
+- OR -
 
-TBD
+`npm i --save-dev @ominestre/rotten-deps` or `yarn add --dev @ominestre/rotten-deps` to install it locally in your project.
 
-## CLI
+## Usage
 
-### Options
+**IMPORTANT:** you must run `npm install` or `yarn install` in your project prior to running `rotten-deps`. The `npm outdated` command relies on your local installation for determining CURRENT, WANTED, and LATEST.
 
-#### `--config-path <string>`
+### CLI
 
-Specifies a path to your configuration file
+You can use `rotten-deps --help` to see the available options and command usage.
+
+#### `---config-path <string>`
+
+Optional: defaults to regular `npm outdated` behavior if a configuration file isn't provided.
+
+Specifies a path to your configuration file. You can use an absolute or relative path (relative to current working directory).
 
 #### `--json`
 
-The output will be json instead of a table. Useful if you're consuming this output programmatically.
+Optional: defaults to CLI table output
+
+Will print the results in JSON format instead of using the CLI table.
 
 #### `--default-expiration <number>`
 
-This will set a default grace period for expiration to all depedencies not defined in rules. If a dependency is defined within the rules that setting takes priority.
+Optional: default behavior is to treat any dependency not specified in the config file as being flagged as outdated immediately without a grace period.
 
-### Exit Code Meanings
+This will set a default grace period for expiration to all dependencies not defined in the rules. If a dependency is defined within the rules that setting will take priority.
+
+### Exit codes and meanings
 
 * `0` indicates that no depedencies are stale or outdated
 * `1` indicates that you have outdated dependencies
 * `2` indicates that you have stale dependencies but no outdated
 
-You can use this in various CI pips to flag the task as good, warn, or fail.
+### API
 
-## API
-
-TBD
+Programatic usage of `rotten-deps` will be explored in the future but for now the focus is CLI. All of the functions are exported but we make no guarantees this remain stable at this time.
