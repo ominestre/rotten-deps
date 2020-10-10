@@ -1,3 +1,9 @@
+## v1.0.0-beta.13
+#### tech
+- enables typescript strict mode and resolves any outstanding issues
+- revises documentation
+- updates dependencies
+
 ## v1.0.0-beta.12
 #### feature
 * allows CLI usage without a config file by specifying a default grace period for expiration
