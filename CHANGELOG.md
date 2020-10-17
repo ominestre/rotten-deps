@@ -1,3 +1,7 @@
+## v1.0.0-beta.19
+#### documentation
+- fixes 404 github pages by disabling jekyll
+
 ## v1.0.0-beta.18
 #### documentation
 - makes `docs/` the equivalent to `docs/generated/` since that's where GitHub pages looks
