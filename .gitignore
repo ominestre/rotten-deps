@@ -1,5 +1,5 @@
 # ignore the generated docs output
-docs/
+# docs/
 
 # ignores the package lock for the sample app
 test/dummies/sample-app/package-lock.json

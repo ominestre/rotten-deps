@@ -3,11 +3,11 @@
     "src/"
   ],
   "exclude": [
-    "docs/generated/",
-    ".eslintrc"
+    "src/.eslintrc"
   ],
   "mode": "modules",
   "out": "docs/",
+  "includeVersion": true,
   "theme": "pages-plugin",
   "pages": {
     "groups": [
