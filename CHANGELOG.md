@@ -1,3 +1,8 @@
+## v1.0.0-beta.17
+#### documentation
+- adds tsdoc for generation of reference docs
+- adds tsdoc-pages for inclusion of markdown files in generated reference docs
+
 ## v1.0.0-beta.16
 #### tech
 - fixes issue where `config` and `npm-interactions` libraries were not being included in the NPM publish
