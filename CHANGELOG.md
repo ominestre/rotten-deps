@@ -1,3 +1,8 @@
+## v1.0.0-beta.18
+#### documentation
+- makes `docs/` the equivalent to `docs/generated/` since that's where GitHub pages looks
+- created `documentation/` for the actual user created markdown files
+
 ## v1.0.0-beta.17
 #### documentation
 - adds tsdoc for generation of reference docs
