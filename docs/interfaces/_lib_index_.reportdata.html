@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>OutdatedPackage | rotten-deps</title>
+	<title>ReportData | rotten-deps</title>
 	<meta name="description" content="Documentation for rotten-deps">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,13 +57,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_lib_npm_interactions_.html">&quot;lib/npm-interactions&quot;</a>
+					<a href="../modules/_lib_index_.html">&quot;lib/index&quot;</a>
 				</li>
 				<li>
-					<a href="_lib_npm_interactions_.outdatedpackage.html">OutdatedPackage</a>
+					<a href="_lib_index_.reportdata.html">ReportData</a>
 				</li>
 			</ul>
-			<h1>Interface OutdatedPackage</h1>
+			<h1>Interface ReportData</h1>
 		</div>
 	</div>
 </header>
@@ -74,7 +74,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">OutdatedPackage</span>
+						<span class="target">ReportData</span>
 					</li>
 				</ul>
 			</section>
@@ -85,10 +85,13 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_npm_interactions_.outdatedpackage.html#current" class="tsd-kind-icon">current</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_npm_interactions_.outdatedpackage.html#latest" class="tsd-kind-icon">latest</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_npm_interactions_.outdatedpackage.html#location" class="tsd-kind-icon">location</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_npm_interactions_.outdatedpackage.html#wanted" class="tsd-kind-icon">wanted</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_index_.reportdata.html#current" class="tsd-kind-icon">current</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_index_.reportdata.html#daysoutdated" class="tsd-kind-icon">days<wbr>Outdated</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_index_.reportdata.html#isignored" class="tsd-kind-icon">is<wbr>Ignored</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_index_.reportdata.html#isoutdated" class="tsd-kind-icon">is<wbr>Outdated</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_index_.reportdata.html#isstale" class="tsd-kind-icon">is<wbr>Stale</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_index_.reportdata.html#latest" class="tsd-kind-icon">latest</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="_lib_index_.reportdata.html#name" class="tsd-kind-icon">name</a></li>
 							</ul>
 						</section>
 					</div>
@@ -98,41 +101,71 @@
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="current" class="tsd-anchor"></a>
-					<h3>current</h3>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> current</h3>
 					<div class="tsd-signature tsd-kind-icon">current<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/e8b28c9/src/lib/npm-interactions.ts#L9">lib/npm-interactions.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/911f50f/src/lib/index.ts#L9">lib/index.ts:9</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="daysoutdated" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> days<wbr>Outdated</h3>
+					<div class="tsd-signature tsd-kind-icon">days<wbr>Outdated<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/911f50f/src/lib/index.ts#L11">lib/index.ts:11</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="isignored" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> is<wbr>Ignored</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Ignored<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/911f50f/src/lib/index.ts#L13">lib/index.ts:13</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="isoutdated" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> is<wbr>Outdated</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Outdated<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/911f50f/src/lib/index.ts#L12">lib/index.ts:12</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="isstale" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> is<wbr>Stale</h3>
+					<div class="tsd-signature tsd-kind-icon">is<wbr>Stale<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/911f50f/src/lib/index.ts#L14">lib/index.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="latest" class="tsd-anchor"></a>
-					<h3>latest</h3>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> latest</h3>
 					<div class="tsd-signature tsd-kind-icon">latest<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/e8b28c9/src/lib/npm-interactions.ts#L11">lib/npm-interactions.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/911f50f/src/lib/index.ts#L10">lib/index.ts:10</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="location" class="tsd-anchor"></a>
-					<h3>location</h3>
-					<div class="tsd-signature tsd-kind-icon">location<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="name" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/e8b28c9/src/lib/npm-interactions.ts#L12">lib/npm-interactions.ts:12</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="wanted" class="tsd-anchor"></a>
-					<h3>wanted</h3>
-					<div class="tsd-signature tsd-kind-icon">wanted<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/e8b28c9/src/lib/npm-interactions.ts#L10">lib/npm-interactions.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/911f50f/src/lib/index.ts#L8">lib/index.ts:8</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -159,54 +192,54 @@
 					<li class=" tsd-kind-module">
 						<a href="../modules/_lib_config_.html">&quot;lib/config&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/_lib_index_.html">&quot;lib/index&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/_lib_npm_interactions_.html">&quot;lib/npm-<wbr>interactions&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
-						<a href="_lib_npm_interactions_.detailsrequest.html" class="tsd-kind-icon">Details<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
-						<a href="_lib_npm_interactions_.outdateddata.html" class="tsd-kind-icon">Outdated<wbr>Data</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module">
-						<a href="_lib_npm_interactions_.outdatedpackage.html" class="tsd-kind-icon">Outdated<wbr>Package</a>
+						<a href="_lib_index_.reportdata.html" class="tsd-kind-icon">Report<wbr>Data</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_npm_interactions_.outdatedpackage.html#current" class="tsd-kind-icon">current</a>
+								<a href="_lib_index_.reportdata.html#current" class="tsd-kind-icon">current</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_npm_interactions_.outdatedpackage.html#latest" class="tsd-kind-icon">latest</a>
+								<a href="_lib_index_.reportdata.html#daysoutdated" class="tsd-kind-icon">days<wbr>Outdated</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_npm_interactions_.outdatedpackage.html#location" class="tsd-kind-icon">location</a>
+								<a href="_lib_index_.reportdata.html#isignored" class="tsd-kind-icon">is<wbr>Ignored</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="_lib_npm_interactions_.outdatedpackage.html#wanted" class="tsd-kind-icon">wanted</a>
+								<a href="_lib_index_.reportdata.html#isoutdated" class="tsd-kind-icon">is<wbr>Outdated</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_lib_index_.reportdata.html#isstale" class="tsd-kind-icon">is<wbr>Stale</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_lib_index_.reportdata.html#latest" class="tsd-kind-icon">latest</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="_lib_index_.reportdata.html#name" class="tsd-kind-icon">name</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
-						<a href="_lib_npm_interactions_.outdatedrequest.html" class="tsd-kind-icon">Outdated<wbr>Request</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="_lib_npm_interactions_.packagedetails.html" class="tsd-kind-icon">Package<wbr>Details</a>
-					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/_lib_npm_interactions_.html#createdetailsrequest" class="tsd-kind-icon">create<wbr>Details<wbr>Request</a>
+						<a href="../modules/_lib_index_.html#generatereport" class="tsd-kind-icon">generate<wbr>Report</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/_lib_npm_interactions_.html#createoutdatedrequest" class="tsd-kind-icon">create<wbr>Outdated<wbr>Request</a>
+					<li class=" tsd-kind-object-literal tsd-parent-kind-module">
+						<a href="../modules/_lib_index_.html#configuration" class="tsd-kind-icon">configuration</a>
+					</li>
+					<li class=" tsd-kind-object-literal tsd-parent-kind-module">
+						<a href="../modules/_lib_index_.html#npm" class="tsd-kind-icon">npm</a>
 					</li>
 				</ul>
 			</nav>

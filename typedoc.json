@@ -7,14 +7,14 @@
     ".eslintrc"
   ],
   "mode": "modules",
-  "out": "docs/generated/",
+  "out": "docs/",
   "theme": "pages-plugin",
   "pages": {
     "groups": [
       {
         "title": "How To",
         "pages": [
-          { "title": "Contibute to the documentation", "source": "./docs/how-to/contribute-to-docs.md" }
+          { "title": "Contibute to the documentation", "source": "./documentation/how-to/contribute-to-docs.md" }
         ]
       }
     ],

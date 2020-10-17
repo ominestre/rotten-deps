@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>ParsedRules | rotten-deps</title>
+	<title>ProcessedReport | rotten-deps</title>
 	<meta name="description" content="Documentation for rotten-deps">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,13 +57,13 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="../modules/_lib_config_.html">&quot;lib/config&quot;</a>
+					<a href="../modules/_bin_rotten_deps_.html">&quot;bin/rotten-deps&quot;</a>
 				</li>
 				<li>
-					<a href="_lib_config_.parsedrules.html">ParsedRules</a>
+					<a href="_bin_rotten_deps_.processedreport.html">ProcessedReport</a>
 				</li>
 			</ul>
-			<h1>Interface ParsedRules</h1>
+			<h1>Interface ProcessedReport</h1>
 		</div>
 	</div>
 </header>
@@ -74,7 +74,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ParsedRules</span>
+						<span class="target">ProcessedReport</span>
 					</li>
 				</ul>
 			</section>
@@ -85,8 +85,9 @@
 						<section class="tsd-index-section tsd-is-not-exported">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_lib_config_.parsedrules.html#kind" class="tsd-kind-icon">kind</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_lib_config_.parsedrules.html#rules" class="tsd-kind-icon">rules</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_bin_rotten_deps_.processedreport.html#json" class="tsd-kind-icon">json</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_bin_rotten_deps_.processedreport.html#status" class="tsd-kind-icon">status</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported"><a href="_bin_rotten_deps_.processedreport.html#table" class="tsd-kind-icon">table</a></li>
 							</ul>
 						</section>
 					</div>
@@ -95,22 +96,32 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-not-exported">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="kind" class="tsd-anchor"></a>
-					<h3>kind</h3>
-					<div class="tsd-signature tsd-kind-icon">kind<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">"rules"</span></div>
+					<a name="json" class="tsd-anchor"></a>
+					<h3>json</h3>
+					<div class="tsd-signature tsd-kind-icon">json<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/e8b28c9/src/lib/config.ts#L32">lib/config.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/911f50f/src/bin/rotten-deps.ts#L17">bin/rotten-deps.ts:17</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-					<a name="rules" class="tsd-anchor"></a>
-					<h3>rules</h3>
-					<div class="tsd-signature tsd-kind-icon">rules<span class="tsd-signature-symbol">:</span> <a href="_lib_config_.rule.html" class="tsd-signature-type">Rule</a><span class="tsd-signature-symbol">[]</span></div>
+					<a name="status" class="tsd-anchor"></a>
+					<h3>status</h3>
+					<div class="tsd-signature tsd-kind-icon">status<span class="tsd-signature-symbol">:</span> <a href="../modules/_bin_rotten_deps_.html#exitcode" class="tsd-signature-type">ExitCode</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/e8b28c9/src/lib/config.ts#L33">lib/config.ts:33</a></li>
+							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/911f50f/src/bin/rotten-deps.ts#L18">bin/rotten-deps.ts:18</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+					<a name="table" class="tsd-anchor"></a>
+					<h3>table</h3>
+					<div class="tsd-signature tsd-kind-icon">table<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/ominestre/rotten-deps/blob/911f50f/src/bin/rotten-deps.ts#L16">bin/rotten-deps.ts:16</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -131,10 +142,10 @@
 					<li class="globals  ">
 						<a href="../globals.html"><em>Globals</em></a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="../modules/_bin_rotten_deps_.html">&quot;bin/rotten-<wbr>deps&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="../modules/_lib_config_.html">&quot;lib/config&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -147,50 +158,41 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module">
-						<a href="_lib_config_.config.html" class="tsd-kind-icon">Config</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
-						<a href="_lib_config_.errorreport.html" class="tsd-kind-icon">Error<wbr>Report</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
-						<a href="_lib_config_.filereader.html" class="tsd-kind-icon">File<wbr>Reader</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
-						<a href="_lib_config_.issue.html" class="tsd-kind-icon">Issue</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
-						<a href="_lib_config_.parsedrules.html" class="tsd-kind-icon">Parsed<wbr>Rules</a>
+						<a href="_bin_rotten_deps_.processedreport.html" class="tsd-kind-icon">Processed<wbr>Report</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="_lib_config_.parsedrules.html#kind" class="tsd-kind-icon">kind</a>
+								<a href="_bin_rotten_deps_.processedreport.html#json" class="tsd-kind-icon">json</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
-								<a href="_lib_config_.parsedrules.html#rules" class="tsd-kind-icon">rules</a>
+								<a href="_bin_rotten_deps_.processedreport.html#status" class="tsd-kind-icon">status</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-not-exported">
+								<a href="_bin_rotten_deps_.processedreport.html#table" class="tsd-kind-icon">table</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
-						<a href="_lib_config_.problem.html" class="tsd-kind-icon">Problem</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-is-not-exported">
-						<a href="_lib_config_.rule.html" class="tsd-kind-icon">Rule</a>
-					</li>
 					<li class=" tsd-kind-type-alias tsd-parent-kind-module tsd-is-not-exported">
-						<a href="../modules/_lib_config_.html#mayberules" class="tsd-kind-icon">Maybe<wbr>Rules</a>
+						<a href="../modules/_bin_rotten_deps_.html#exitcode" class="tsd-kind-icon">Exit<wbr>Code</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/_lib_config_.html#createconfig" class="tsd-kind-icon">create<wbr>Config</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_bin_rotten_deps_.html#argv" class="tsd-kind-icon">argv</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="../modules/_lib_config_.html#createfilereader" class="tsd-kind-icon">create<wbr>File<wbr>Reader</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_bin_rotten_deps_.html#configpath" class="tsd-kind-icon">config<wbr>Path</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_bin_rotten_deps_.html#defaultexpiration" class="tsd-kind-icon">default<wbr>Expiration</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
-						<a href="../modules/_lib_config_.html#parserules" class="tsd-kind-icon">parse<wbr>Rules</a>
+						<a href="../modules/_bin_rotten_deps_.html#configparser" class="tsd-kind-icon">config<wbr>Parser</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-not-exported">
+						<a href="../modules/_bin_rotten_deps_.html#maestro" class="tsd-kind-icon">maestro</a>
 					</li>
 				</ul>
 			</nav>
