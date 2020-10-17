@@ -1,0 +1,23 @@
+{
+  "inputFiles": [
+    "src/"
+  ],
+  "exclude": [
+    "docs/generated/",
+    ".eslintrc"
+  ],
+  "mode": "modules",
+  "out": "docs/generated/",
+  "theme": "pages-plugin",
+  "pages": {
+    "groups": [
+      {
+        "title": "How To",
+        "pages": [
+          { "title": "Contibute to the documentation", "source": "./docs/how-to/contribute-to-docs.md" }
+        ]
+      }
+    ],
+    "output": "pages"
+  }
+}
