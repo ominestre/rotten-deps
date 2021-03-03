@@ -30,26 +30,26 @@
   "devDependencies": {
     "@types/chai": "^4.2.13",
     "@types/cli-table": "^0.3.0",
-    "@types/mocha": "~8.0.3",
-    "@types/node": "~14.11.8",
+    "@types/mocha": "~8.2.1",
+    "@types/node": "~14.14.31",
     "@types/sinon": "^9.0.8",
-    "@types/yargs": "~15.0.8",
-    "@typescript-eslint/parser": "~4.4.0",
-    "chai": "~4.2.0",
-    "eslint": "~7.11.0",
+    "@types/yargs": "~16.0.0",
+    "@typescript-eslint/parser": "~4.16.1",
+    "chai": "~4.3.1",
+    "eslint": "~7.21.0",
     "eslint-config-airbnb-base": "~14.2.0",
     "eslint-plugin-import": "~2.22.1",
     "esm": "~3.2.25",
-    "mocha": "~8.1.3",
+    "mocha": "~8.3.0",
     "rimraf": "~3.0.2",
     "sinon": "~9.2.0",
-    "ts-node": "~9.0.0",
-    "typedoc": "^0.19.2",
+    "ts-node": "~9.1.1",
+    "typedoc": "~0.20.28",
     "typedoc-plugin-pages": "^1.0.1",
-    "typescript": "~4.0.3"
+    "typescript": "~4.2.2"
   },
   "dependencies": {
     "cli-table": "~0.3.1",
-    "yargs": "~16.0.3"
+    "yargs": "~16.2.0"
   }
 }
