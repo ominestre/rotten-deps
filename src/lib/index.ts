@@ -14,12 +14,28 @@ export interface ReportData {
   readonly isStale: boolean,
 }
 
-export const generateReport = async (c: Config): Promise<ReportData[]|Error> => {
+interface Reporter {
+  setTotal(total: number): any,
+  report(data: ReportData): any,
+}
+
+/**
+ * Compares the details on each dependency flagged as outdated in order to
+ * determine how stale a verison actually is.
+ *
+ * @param r optional reporter object which has a function for setting the
+ *  total number of outdated dependencies and another for reporting a
+ *  single dependency's data. A usecase for this would be to hook into a
+ *  progress bar or other progress related monitoring.
+ */
+export const generateReport = async (c: Config, r?: Reporter): Promise<ReportData[]|Error> => {
   const config = createConfig(c);
   const { rules } = config;
 
   const getOutdated = createOutdatedRequest();
   const outdated = await getOutdated();
+
+  if (r) r.setTotal(Object.keys(outdated).length);
 
   if (outdated instanceof Error) return outdated;
 
@@ -61,7 +77,7 @@ export const generateReport = async (c: Config): Promise<ReportData[]|Error> => 
         isOutdated = false;
       }
 
-      reportData.push({
+      const data = {
         name,
         current: desiredDetails.current,
         latest: desiredDetails.latest,
@@ -69,7 +85,11 @@ export const generateReport = async (c: Config): Promise<ReportData[]|Error> => 
         isOutdated,
         isIgnored,
         isStale,
-      });
+      };
+
+      if (r) r.report(data);
+
+      reportData.push(data);
     });
 
     return reportData;

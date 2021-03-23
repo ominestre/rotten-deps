@@ -1,7 +1,9 @@
 import { join } from 'path';
 import { readFileSync } from 'fs';
 import { assert } from 'chai';
+import { spy } from 'sinon';
 import { generateReport } from '../src/lib/index';
+import { createOutdatedRequest } from '../src/lib/npm-interactions';
 
 
 const defaultDir = process.cwd();
@@ -70,7 +72,26 @@ describe('API integrations', () => {
     assert.isFalse(chai.isStale);
   }).timeout(20000);
 
-  /*  Sitting on this one because you should just be using npm or yarn outdated.
+  it('Uses optional reporter hooks', async () => {
+    sampleAppDir();
+    const config = getTestConfig('rules-only-config');
+
+    const totalSpy = spy();
+    const reportSpy = spy();
+  
+    const maybeReport = await generateReport(config, { report: reportSpy, setTotal: totalSpy });
+    const outdatedRequest = createOutdatedRequest();
+    const outdated = await outdatedRequest();
+    const outdatedCount = Object.keys(outdated).length;
+
+    assert.isTrue(totalSpy.calledOnce);
+    assert.isTrue(totalSpy.calledWith(outdatedCount));
+
+    assert.isTrue(reportSpy.called);
+    assert.equal(reportSpy.callCount, outdatedCount);
+  }).timeout(20000);
+
+  /*  TODO Sitting on this one because you should just be using npm or yarn outdated.
       Not sure I want to support this scenario */
   xit('Could generate a report without config');
   xit('Should generate a report using only global settings and no rules');
