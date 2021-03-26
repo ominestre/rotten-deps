@@ -5,6 +5,7 @@ import {
   isAbsolute,
   resolve as pathResolve,
 } from 'path';
+import cliProgress from 'cli-progress';
 import Table from 'cli-table';
 import { existsSync } from 'fs';
 import { configuration, generateReport } from '../lib/index';
@@ -40,9 +41,21 @@ const { argv } = yargs
       you should specifiy this there instead`,
     type: 'number',
     conflicts: 'config-path',
-  });
+  })
+  .option('progress', {
+    description: 'displays a progress bar',
+    boolean: true,
+    requiresArg: false,
+  })
 
 if (argv.help) yargs.showHelp();
+
+
+const progressBarConfig: cliProgress.Options = {
+  hideCursor: true,
+  format: ' {bar} | {task} | {value}/{total}',
+}
+
 
 const maestro = (config: Config): void => {
   const buildConfigObject = (x: Config): Promise<Config> => new Promise(resolve => {
@@ -87,7 +100,21 @@ const maestro = (config: Config): void => {
   }
 
   buildConfigObject(config)
-    .then(generateReport)
+    .then(
+      (config) => {
+        const progress = new cliProgress.SingleBar(progressBarConfig, cliProgress.Presets.shades_grey);
+
+        const reporter = argv.progress ? {
+          setTotal: (total: number) => progress.start(total, 0, { task: 'generating report' }),
+          report: () => {
+            progress.increment();
+          },
+          done: () => progress.stop(),
+        } : undefined;
+
+        return generateReport(config, reporter);
+      }
+    )
     .then(processReport)
     .then(shoutReport);
 };
