@@ -78,8 +78,9 @@ describe('API integrations', () => {
 
     const totalSpy = spy();
     const reportSpy = spy();
+    const doneSpy = spy();
   
-    const maybeReport = await generateReport(config, { report: reportSpy, setTotal: totalSpy });
+    const maybeReport = await generateReport(config, { report: reportSpy, setTotal: totalSpy, done: doneSpy });
     const outdatedRequest = createOutdatedRequest();
     const outdated = await outdatedRequest();
     const outdatedCount = Object.keys(outdated).length;
@@ -89,6 +90,8 @@ describe('API integrations', () => {
 
     assert.isTrue(reportSpy.called);
     assert.equal(reportSpy.callCount, outdatedCount);
+
+    assert.isTrue(doneSpy.calledOnce);
   }).timeout(20000);
 
   /*  TODO Sitting on this one because you should just be using npm or yarn outdated.

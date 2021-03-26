@@ -17,6 +17,7 @@ export interface ReportData {
 interface Reporter {
   setTotal(total: number): any,
   report(data: ReportData): any,
+  done(): void,
 }
 
 /**
@@ -35,14 +36,14 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportDat
   const getOutdated = createOutdatedRequest();
   const outdated = await getOutdated();
 
-  if (r) r.setTotal(Object.keys(outdated).length);
+  r?.setTotal(Object.keys(outdated).length);
 
   if (outdated instanceof Error) return outdated;
 
   try {
     const reportData: ReportData[] = [];
 
-    Object.entries(outdated).forEach(async (x) => {
+    for (const x of Object.entries(outdated)) {
       const [name, desiredDetails]: [string, OutdatedPackage] = x;
       const getDetails = createDetailsRequest(name);
       const details = await getDetails();
@@ -87,11 +88,12 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportDat
         isStale,
       };
 
-      if (r) r.report(data);
+      r?.report(data);
 
       reportData.push(data);
-    });
+    }
 
+    r?.done();
     return reportData;
   } catch (err) {
     return err;

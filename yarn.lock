@@ -92,6 +92,13 @@
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-4.2.15.tgz#b7a6d263c2cecf44b6de9a051cf496249b154553"
   integrity sha512-rYff6FI+ZTKAPkJUoyz7Udq3GaoDZnxYDEvdEdFZASiA7PoErltHezDishqQiSDWrGxvxmplH304jyzQmjp0AQ==
 
+"@types/cli-progress@^3.9.1":
+  version "3.9.1"
+  resolved "https://registry.yarnpkg.com/@types/cli-progress/-/cli-progress-3.9.1.tgz#285e7fbdad6e7baf072d163ae1c3b23b7b219130"
+  integrity sha512-X/tKJv/GoYlCBS9wwJTLrVSxzIOI/Cj1cCatYOAAoQne3aT1QbHBptBS5+zLe2ToSljAijHU1N/ouBNFvZ2H/g==
+  dependencies:
+    "@types/node" "*"
+
 "@types/cli-table@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@types/cli-table/-/cli-table-0.3.0.tgz#f1857156bf5fd115c6a2db260ba0be1f8fc5671c"
@@ -111,6 +118,11 @@
   version "8.2.1"
   resolved "https://registry.yarnpkg.com/@types/mocha/-/mocha-8.2.1.tgz#f3f3ae4590c5386fc7c543aae9b78d4cf30ffee9"
   integrity sha512-NysN+bNqj6E0Hv4CTGWSlPzMW6vTKjDpOteycDkV4IWBsO+PU48JonrPzV9ODjiI2XrjmA05KInLgF5ivZ/YGQ==
+
+"@types/node@*":
+  version "14.14.35"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.35.tgz#42c953a4e2b18ab931f72477e7012172f4ffa313"
+  integrity sha512-Lt+wj8NVPx0zUmUwumiVXapmaLUcAk3yPuHCFVXras9k5VT9TdhJqKqGVUQCD60OTMCl0qxJ57OiTL0Mic3Iag==
 
 "@types/node@~14.14.31":
   version "14.14.31"
@@ -429,6 +441,14 @@ chokidar@3.5.1:
   optionalDependencies:
     fsevents "~2.3.1"
 
+cli-progress@^3.9.0:
+  version "3.9.0"
+  resolved "https://registry.yarnpkg.com/cli-progress/-/cli-progress-3.9.0.tgz#25db83447deb812e62d05bac1af9aec5387ef3d4"
+  integrity sha512-g7rLWfhAo/7pF+a/STFH/xPyosaL1zgADhI0OM83hl3c7S43iGvJWEAV2QuDOnQ8i6EMBj/u4+NTd0d5L+4JfA==
+  dependencies:
+    colors "^1.1.2"
+    string-width "^4.2.0"
+
 cli-table@~0.3.1:
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/cli-table/-/cli-table-0.3.5.tgz#643508c1d6b6e7b02c82c18afd5fcc8b6dab3ca6"
@@ -474,7 +494,7 @@ colors@1.0.3:
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.0.3.tgz#0433f44d809680fdeb60ed260f1b0c262e82a40b"
   integrity sha1-BDP0TYCWgP3rYO0mDxsMJi6CpAs=
 
-colors@^1.4.0:
+colors@^1.1.2, colors@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.4.0.tgz#c50491479d4c1bdaed2c9ced32cf7c7dc2360f78"
   integrity sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==

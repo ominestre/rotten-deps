@@ -39,6 +39,12 @@ Optional: default behavior is to treat any dependency not specified in the confi
 
 This will set a default grace period in number of days for expiration to all dependencies not defined in the rules. If a dependency is defined within the rules that setting will take priority.
 
+#### `--progress`
+
+Optional: default behavior is to not display a progress bar since CLI logs don't display this well
+
+This will display a progress bar since the report generation can take longer time when you have a lot of dependencies.
+
 ### Exit codes and meanings
 
 * `0` indicates that no depedencies are stale or outdated
