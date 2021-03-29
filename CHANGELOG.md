@@ -1,3 +1,7 @@
+## v1.0.0-beta.21
+#### feature
+- adds optional progress bar to report generation using CLI flag `--progress`
+
 ## v1.0.0-beta.19
 #### documentation
 - fixes 404 github pages by disabling jekyll
