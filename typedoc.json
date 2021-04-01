@@ -14,7 +14,8 @@
       {
         "title": "How To",
         "pages": [
-          { "title": "Contibute to the documentation", "source": "./documentation/how-to/contribute-to-docs.md" }
+          { "title": "Contibute to the documentation", "source": "./documentation/how-to/contribute-to-docs.md" },
+          { "title": "Create and use a configuration file", "source": "./documentation/how-to/create-a-config-file.md" }
         ]
       }
     ],
