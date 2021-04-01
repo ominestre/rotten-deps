@@ -13,7 +13,8 @@
     "test": "mocha -r ts-node/register test/*",
     "docs": "npm run docs:clean && npm run typedoc",
     "docs:clean": "rimraf .docs/generated/",
-    "typedoc": "typedoc --options typedoc.json --plugin typedoc-plugin-pages"
+    "typedoc": "typedoc --options typedoc.json --plugin typedoc-plugin-pages",
+    "rotten": "node ./bin/rotten-deps.js --default-expiration 10"
   },
   "author": {
     "name": "Mike Miller",
