@@ -12,6 +12,7 @@
     "pretest": "(cd test/dummies/sample-app && npm install --no-audit) && npm run build",
     "test": "mocha -r ts-node/register test/*",
     "docs": "npm run docs:clean && npm run typedoc",
+    "postinstall": "cp ./documentation/type.hbs ./node_modules/typedoc-plugin-pages/dist/theme/v2/partials/type.hbs",
     "docs:clean": "rimraf .docs/generated/",
     "typedoc": "typedoc --options typedoc.json --plugin typedoc-plugin-pages",
     "rotten": "node ./bin/rotten-deps.js --default-expiration 10"
