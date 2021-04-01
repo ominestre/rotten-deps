@@ -1,11 +1,11 @@
 {
-  "inputFiles": [
-    "src/"
+  "entryPoints": [
+    "src/lib/",
+    "src/bin/"
   ],
   "exclude": [
     "src/.eslintrc"
   ],
-  "mode": "modules",
   "out": "docs/",
   "includeVersion": true,
   "theme": "pages-plugin",
