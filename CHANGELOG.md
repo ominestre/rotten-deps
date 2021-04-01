@@ -1,3 +1,7 @@
+## v1.0.0-beta.22
+- Started drinking our own flavor-aide. Replaced `yarn outdated` with `rotten-deps`
+- Updated dependencies
+
 ## v1.0.0-beta.21
 #### feature
 - adds optional progress bar to report generation using CLI flag `--progress`
