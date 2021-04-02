@@ -1,5 +1,12 @@
 #!/usr/bin/env node
 
+/**
+ * CLI options handling and orchestration
+ * 
+ * @module
+ * @hidden
+ */
+
 import * as yargs from 'yargs';
 import {
   isAbsolute,

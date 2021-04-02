@@ -1,3 +1,9 @@
+/**
+ * Rotten Deps configuration library
+ * 
+ * @module
+ */
+
 import Table from 'cli-table';
 import { readFileSync } from 'fs';
 
