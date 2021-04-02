@@ -1,3 +1,9 @@
+## 1.0.0-beta.23
+- DOCS: rebuilds README.md
+- DOCS: Adds documentation for creating a config file
+- DOCS/TOOLS: Patches `typedoc-plugin-pages` to fix inconsistency with the latest version of `typescript` and `typedoc`
+- MINOR: Adds tast to preserve `.nojekyll` after running a docs clean task
+
 ## v1.0.0-beta.22
 - Started drinking our own flavor-aide. Replaced `yarn outdated` with `rotten-deps`
 - Updated dependencies
