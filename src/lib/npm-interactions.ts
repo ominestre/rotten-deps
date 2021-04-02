@@ -1,3 +1,8 @@
+/**
+ * Rotten Deps NPM Interactions library
+ * @module
+ */
+
 import * as proc from 'child_process';
 
 export interface PackageDetails {

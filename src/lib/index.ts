@@ -1,3 +1,8 @@
+/**
+ * Rotten Deps API
+ * @module
+ */
+
 import { createFileReader, createConfig } from './config';
 import { createOutdatedRequest, createDetailsRequest } from './npm-interactions';
 
