@@ -1,3 +1,9 @@
+## 1.0.0-beta.24
+- BUG: [Issue #3](https://github.com/ominestre/rotten-deps/issues/3) Fixes issue with generating report before installed 
+- OPS: Configures CI to fail on outdated
+- TOOLS: Creates a script for handling releases
+- DOCS: Revises the module header TSDoc
+
 ## 1.0.0-beta.23
 - DOCS: rebuilds README.md
 - DOCS: Adds documentation for creating a config file
