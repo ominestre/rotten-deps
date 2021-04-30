@@ -31,16 +31,16 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@types/chai": "^4.2.13",
+    "@types/chai": "~4.2.17",
     "@types/cli-progress": "^3.9.1",
     "@types/cli-table": "^0.3.0",
     "@types/mocha": "~8.2.2",
-    "@types/node": "~14.14.37",
-    "@types/sinon": "~9.0.11",
+    "@types/node": "~15.0.1",
+    "@types/sinon": "~10.0.0",
     "@types/yargs": "~16.0.1",
-    "@typescript-eslint/parser": "~4.20.0",
+    "@typescript-eslint/parser": "~4.22.0",
     "chai": "~4.3.4",
-    "eslint": "~7.23.0",
+    "eslint": "~7.25.0",
     "eslint-config-airbnb-base": "~14.2.0",
     "eslint-plugin-import": "~2.22.1",
     "esm": "~3.2.25",
@@ -48,9 +48,9 @@
     "rimraf": "~3.0.2",
     "sinon": "~10.0.0",
     "ts-node": "~9.1.1",
-    "typedoc": "~0.20.34",
+    "typedoc": "~0.20.36",
     "typedoc-plugin-pages": "^1.0.1",
-    "typescript": "~4.2.3"
+    "typescript": "~4.2.4"
   },
   "dependencies": {
     "cli-progress": "^3.9.0",
