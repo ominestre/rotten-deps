@@ -17,7 +17,7 @@ import Table from 'cli-table';
 import { existsSync } from 'fs';
 import { configuration, generateReport } from '../lib/index';
 
-import type { ReportData } from '../lib/index';
+import type { ReportResponse } from '../lib/index';
 import type { Config } from '../lib/config';
 
 interface ProcessedReport {
@@ -69,8 +69,12 @@ const maestro = (config: Config): void => {
     resolve(configuration.createConfig(x));
   });
 
-  const processReport = (x: ReportData[]|Error): Promise<ProcessedReport> => new Promise(resolve => {
+  const processReport = (x: ReportResponse|Error): Promise<ProcessedReport> => new Promise(resolve => {
     if (x instanceof Error) throw x;
+    
+    if (x.kind === 'warning') {
+      if (x.hasPreinstallWarning) console.warn('Unable to accurately calculate days outdated unless you use npm/yarn install first');
+    }
 
     let exitCode: ExitCode = 0;
   
@@ -78,7 +82,7 @@ const maestro = (config: Config): void => {
       head: ['name', 'current version', 'latest version', 'days outdated', 'is outdated'],
     });
 
-    x.forEach(({
+    x.data.forEach(({
       name,
       current,
       latest,
@@ -87,6 +91,7 @@ const maestro = (config: Config): void => {
       isIgnored,
       isStale,
     }) => {
+      // if the exit code is already 1 for error we don't want to downgrade to warn
       if (!isIgnored && exitCode !== 1 && isStale) exitCode = 2;
       if (!isIgnored && isOutdated) exitCode = 1;
       const outdated = isIgnored ? 'ignored' : isOutdated;
@@ -95,7 +100,7 @@ const maestro = (config: Config): void => {
 
     resolve({
       table: table.toString(),
-      json: JSON.stringify(x),
+      json: JSON.stringify(x.data),
       status: exitCode,
     });
   });

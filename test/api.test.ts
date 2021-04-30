@@ -12,6 +12,9 @@ const restoreDir = changeDir(defaultDir);
 const sampleAppDir = changeDir(
   join(__dirname, './dummies/sample-app'),
 );
+const noInstallDir = changeDir(
+  join(__dirname, './dummies/sample-app-no-install'),
+);
 
 
 const sampleConfigDir = join(__dirname, './dummies/');
@@ -21,14 +24,14 @@ const getTestConfig = (configID: string) => JSON.parse(readFileSync(`${sampleCon
 describe('API integrations', () => {
   afterEach(restoreDir);
 
-  it('Should generate a report using a config with only rules', async () => {
+  it('generate a report using a config with only rules', async () => {
     sampleAppDir();
     const config = getTestConfig('rules-only-config');
     const maybeReport = await generateReport(config);
 
     if (maybeReport instanceof Error) throw maybeReport;
 
-    const filter = (name: string) => maybeReport.filter(x => x.name === name).shift();
+    const filter = (name: string) => maybeReport.data.filter(x => x.name === name).shift();
     const leftPadLOL = filter('left-pad');
     const mocha = filter('mocha');
     const chai = filter('chai');
@@ -94,8 +97,18 @@ describe('API integrations', () => {
     assert.isTrue(doneSpy.calledOnce);
   }).timeout(20000);
 
+  it('generates a report with warnings when you don\'t install first', async () => {
+    noInstallDir();
+    const config = getTestConfig('rules-only-config');
+    const maybeReport = await generateReport(config);
+
+    if (maybeReport instanceof Error) throw maybeReport;
+
+    assert.equal(maybeReport.kind, 'warning', 'The report type should be a report with warnings');
+  }).timeout(20000);
+
   /*  TODO Sitting on this one because you should just be using npm or yarn outdated.
       Not sure I want to support this scenario */
-  xit('Could generate a report without config');
-  xit('Should generate a report using only global settings and no rules');
+  xit('generate a report without config');
+  xit('generate a report using only global settings and no rules');
 });

@@ -9,15 +9,28 @@ import { createOutdatedRequest, createDetailsRequest } from './npm-interactions'
 import type { Config } from './config';
 import type { OutdatedPackage } from './npm-interactions';
 
-export interface ReportData {
-  readonly name: string,
-  readonly current: string,
-  readonly latest: string,
-  readonly daysOutdated: number,
-  readonly isOutdated: boolean,
-  readonly isIgnored: boolean,
-  readonly isStale: boolean,
+interface ReportData {
+  name: string,
+  current: string,
+  latest: string,
+  daysOutdated: number,
+  isOutdated: boolean,
+  isIgnored: boolean,
+  isStale: boolean,
 }
+
+interface Report {
+  kind: 'report',
+  data: ReportData[],
+}
+
+interface ReportWithWarning {
+  kind: 'warning',
+  data: ReportData[],
+  hasPreinstallWarning: boolean,
+}
+
+export type ReportResponse = Report | ReportWithWarning;
 
 interface Reporter {
   setTotal(total: number): any,
@@ -34,7 +47,7 @@ interface Reporter {
  *  single dependency's data. A usecase for this would be to hook into a
  *  progress bar or other progress related monitoring.
  */
-export const generateReport = async (c: Config, r?: Reporter): Promise<ReportData[]|Error> => {
+export const generateReport = async (c: Config, r?: Reporter): Promise<ReportResponse | Error> => {
   const config = createConfig(c);
   const { rules } = config;
 
@@ -47,6 +60,7 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportDat
 
   try {
     const reportData: ReportData[] = [];
+    let hasPreinstallWarning = false;
 
     for (const x of Object.entries(outdated)) {
       const [name, desiredDetails]: [string, OutdatedPackage] = x;
@@ -54,10 +68,18 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportDat
       const details = await getDetails();
 
       if (details instanceof Error) return details;
+      if (!desiredDetails.current) hasPreinstallWarning = true;
 
       // it's the time prop in the npm response but it's a collection of versions and dates
       const { time: versions } = details;
-      const currentVersion = versions[desiredDetails.current];
+
+      /*  When running `npm outdated` without first installing the current version will be
+          missing causing a breakdown in determination of days outdated. This will use the
+          wanted version instead. */
+      const currentVersion = !desiredDetails.current
+        ? versions[desiredDetails.wanted]
+        : versions[desiredDetails.current];
+
       const latestVersion = versions[desiredDetails.latest];
       const currentDate = new Date(currentVersion);
       const latestDate = new Date(latestVersion);
@@ -85,7 +107,7 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportDat
 
       const data = {
         name,
-        current: desiredDetails.current,
+        current: !desiredDetails.current ? desiredDetails.wanted : desiredDetails.current,
         latest: desiredDetails.latest,
         daysOutdated,
         isOutdated,
@@ -99,7 +121,19 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportDat
     }
 
     r?.done();
-    return reportData;
+    
+    if (hasPreinstallWarning) {
+      return {
+        kind: 'warning',
+        data: reportData,
+        hasPreinstallWarning: true,
+      };
+    } else {
+      return {
+        kind: 'report',
+        data: reportData,
+      };
+    }
   } catch (err) {
     return err;
   }
