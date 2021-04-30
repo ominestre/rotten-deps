@@ -39,7 +39,6 @@ jobs:
       - run: yarn audit
   outdated:
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: check yarn outdated
         uses: actions/setup-node@v1
