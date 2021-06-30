@@ -31,7 +31,7 @@ interface ProcessedReport {
 // 2 - stale deps but no outdated
 type ExitCode = 0 | 1 | 2;
 
-const { argv } = yargs
+yargs
   .scriptName('rotten-deps')
   .usage('$0 [options]')
   .option('config-path', {
@@ -54,106 +54,107 @@ const { argv } = yargs
     boolean: true,
     requiresArg: false,
   })
+  .parseAsync()
+  .then(argv => {
+    if (argv.help) yargs.showHelp();
 
-if (argv.help) yargs.showHelp();
-
-
-const progressBarConfig: cliProgress.Options = {
-  hideCursor: true,
-  format: ' {bar} | {task} | {value}/{total}',
-}
-
-
-const maestro = (config: Config): void => {
-  const buildConfigObject = (x: Config): Promise<Config> => new Promise(resolve => {
-    resolve(configuration.createConfig(x));
-  });
-
-  const processReport = (x: ReportResponse|Error): Promise<ProcessedReport> => new Promise(resolve => {
-    if (x instanceof Error) throw x;
-    
-    if (x.kind === 'warning') {
-      if (x.hasPreinstallWarning) console.warn('Unable to accurately calculate days outdated unless you use npm/yarn install first');
+    const progressBarConfig: cliProgress.Options = {
+      hideCursor: true,
+      format: ' {bar} | {task} | {value}/{total}',
     }
 
-    let exitCode: ExitCode = 0;
-  
-    const table = new Table({
-      head: ['name', 'current version', 'latest version', 'days outdated', 'is outdated'],
-    });
 
-    x.data.forEach(({
-      name,
-      current,
-      latest,
-      daysOutdated,
-      isOutdated,
-      isIgnored,
-      isStale,
-    }) => {
-      // if the exit code is already 1 for error we don't want to downgrade to warn
-      if (!isIgnored && exitCode !== 1 && isStale) exitCode = 2;
-      if (!isIgnored && isOutdated) exitCode = 1;
-      const outdated = isIgnored ? 'ignored' : isOutdated;
-      table.push([name, current, latest, daysOutdated, outdated]);
-    });
+    const maestro = (config: Config): void => {
+      const buildConfigObject = (x: Config): Promise<Config> => new Promise(resolve => {
+        resolve(configuration.createConfig(x));
+      });
 
-    resolve({
-      table: table.toString(),
-      json: JSON.stringify(x.data),
-      status: exitCode,
-    });
-  });
+      const processReport = (x: ReportResponse|Error): Promise<ProcessedReport> => new Promise(resolve => {
+        if (x instanceof Error) throw x;
+        
+        if (x.kind === 'warning') {
+          if (x.hasPreinstallWarning) console.warn('Unable to accurately calculate days outdated unless you use npm/yarn install first');
+        }
 
-  const shoutReport = ({ table, json, status }: ProcessedReport): void => {
-    if (argv.json) console.log(json);
-    else console.log(table);
-    process.exit(status);
-  }
+        let exitCode: ExitCode = 0;
+      
+        const table = new Table({
+          head: ['name', 'current version', 'latest version', 'days outdated', 'is outdated'],
+        });
 
-  buildConfigObject(config)
-    .then(
-      (config) => {
-        const progress = new cliProgress.SingleBar(progressBarConfig, cliProgress.Presets.shades_grey);
+        x.data.forEach(({
+          name,
+          current,
+          latest,
+          daysOutdated,
+          isOutdated,
+          isIgnored,
+          isStale,
+        }) => {
+          // if the exit code is already 1 for error we don't want to downgrade to warn
+          if (!isIgnored && exitCode !== 1 && isStale) exitCode = 2;
+          if (!isIgnored && isOutdated) exitCode = 1;
+          const outdated = isIgnored ? 'ignored' : isOutdated;
+          table.push([name, current, latest, daysOutdated, outdated]);
+        });
 
-        const reporter = argv.progress ? {
-          setTotal: (total: number) => progress.start(total, 0, { task: 'generating report' }),
-          report: () => {
-            progress.increment();
-          },
-          done: () => progress.stop(),
-        } : undefined;
+        resolve({
+          table: table.toString(),
+          json: JSON.stringify(x.data),
+          status: exitCode,
+        });
+      });
 
-        return generateReport(config, reporter);
+      const shoutReport = ({ table, json, status }: ProcessedReport): void => {
+        if (argv.json) console.log(json);
+        else console.log(table);
+        process.exit(status);
       }
-    )
-    .then(processReport)
-    .then(shoutReport);
-};
 
-const configPath = argv['config-path'];
-const defaultExpiration = argv['default-expiration'];
+      buildConfigObject(config)
+        .then(
+          (config) => {
+            const progress = new cliProgress.SingleBar(progressBarConfig, cliProgress.Presets.shades_grey);
 
-const configParser = (raw: string): Promise<Config> => new Promise(resolve => resolve(JSON.parse(raw)));
+            const reporter = argv.progress ? {
+              setTotal: (total: number) => progress.start(total, 0, { task: 'generating report' }),
+              report: () => {
+                progress.increment();
+              },
+              done: () => progress.stop(),
+            } : undefined;
 
-if (configPath && isAbsolute(configPath)) {
-  const configReader = configuration.createFileReader(configPath);
-  configReader()
-    .then(configParser)
-    .then(maestro);
-} else if (configPath) {
-  const maybePath = pathResolve(configPath);
-  if (!existsSync(maybePath)) yargs.exit(1, new Error(`${configPath} could not be resolved from configuration`));
-  const configReader = configuration.createFileReader(configPath);
-  configReader()
-    .then(configParser)
-    .then(maestro);
-} else {
-  let config: Config = {
-    rules: [],
-  };
+            return generateReport(config, reporter);
+          }
+        )
+        .then(processReport)
+        .then(shoutReport);
+    };
 
-  if (defaultExpiration) config.defaultExpiration = defaultExpiration;
+    const configPath = argv['config-path'];
+    const defaultExpiration = argv['default-expiration'];
 
-  maestro(config);
-}
+    const configParser = (raw: string): Promise<Config> => new Promise(resolve => resolve(JSON.parse(raw)));
+
+    if (configPath && isAbsolute(configPath)) {
+      const configReader = configuration.createFileReader(configPath);
+      configReader()
+        .then(configParser)
+        .then(maestro);
+    } else if (configPath) {
+      const maybePath = pathResolve(configPath);
+      if (!existsSync(maybePath)) yargs.exit(1, new Error(`${configPath} could not be resolved from configuration`));
+      const configReader = configuration.createFileReader(configPath);
+      configReader()
+        .then(configParser)
+        .then(maestro);
+    } else {
+      let config: Config = {
+        rules: [],
+      };
+
+      if (defaultExpiration) config.defaultExpiration = defaultExpiration;
+
+      maestro(config);
+    }
+  });
