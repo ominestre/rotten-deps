@@ -1,13 +1,18 @@
 ## [Unreleased]
 ### Added
 - Docs on contributing to the project [change](https://github.com/ominestre/rotten-deps/pull/58/)
+- Docs on how the days outdated are determined [change](https://github.com/ominestre/rotten-deps/pull/61)
 
 ### Changed
 - Changed the format of `CHANGELOG.md` again [change](https://github.com/ominestre/rotten-deps/pull/58/)
 
+### Fixed
+- Fixed days outdated being calculated incorrectly [change](https://github.com/ominestre/rotten-deps/pull/61)
+
 ### Removed
 - Upgraded to Yargs `v17.x` which drops support for Node `v10.x`. Node `v10.x` will no longer be tested
 and supported by this project [change](https://github.com/ominestre/rotten-deps/pull/55)
+
 ### Security
 - Patches Lodash to address command injection in Lodash templates [change](https://github.com/ominestre/rotten-deps/pull/55)
 - Patches developer dependencies [change](https://github.com/ominestre/rotten-deps/pull/55)
