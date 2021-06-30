@@ -44,6 +44,10 @@ At this time the API isn't officially supported but you can probably figure it o
 
 #### Exit codes and meanings
 
-* `0` indicates that no depedencies are stale or outdated
+* `0` indicates that no dependencies are stale or outdated
 * `1` indicates that you have outdated dependencies
 * `2` indicates that you have stale dependencies but no outdated
+
+## Contributing
+
+For instructions on contributing to this project please see [CONTRIBUTING.md](./CONTRIBUTING.md).
