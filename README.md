@@ -20,6 +20,16 @@ Assuming you've decided that 14 days is an acceptable compliance periods for upd
 
 This is good for setting organization base rules if you are working in an organization that has patching compliance windows. 
 
+## How is days outdated determined?
+
+We use your current version of a dependency as it is installed in your `node_modules`. Then based off a list of
+versions we determine the next semver version which is not a pre-release and use that as our comparison point. Days outdated is
+then calculated as the delta between the UTC seconds now versus the UTC seconds of next version's publish date. The delta is
+then converted and rounded to days and used in the report.
+
+There is a special case where if you forget to install your project first using `yarn install` or `npm install` you won't have
+a `node_modules/` so the wanted version is used instead which is determined based on how you pinned a version in your `package.json`.
+
 ## How do I use this?
 
 ### Installation
