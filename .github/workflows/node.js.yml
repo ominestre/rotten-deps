@@ -7,9 +7,9 @@ on:
   push:
     branches:
       - '*'
-      - '!master'
+      - '!main'
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
   schedule:
     - cron: '0 0 * * *'
 
