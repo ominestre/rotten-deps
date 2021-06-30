@@ -38,6 +38,8 @@ interface Reporter {
   done(): void,
 }
 
+const MILLISECONDS_IN_DAY = 86400000;
+
 /**
  * Compares the details on each dependency flagged as outdated in order to
  * determine how stale a verison actually is.
@@ -71,23 +73,32 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
       if (!desiredDetails.current) hasPreinstallWarning = true;
 
       // it's the time prop in the npm response but it's a collection of versions and dates
-      const { time: versions } = details;
+      const { time: versionData } = details;
+      const versions = Object.keys(versionData);
 
       /*  When running `npm outdated` without first installing the current version will be
           missing causing a breakdown in determination of days outdated. This will use the
           wanted version instead. */
       const currentVersion = !desiredDetails.current
-        ? versions[desiredDetails.wanted]
-        : versions[desiredDetails.current];
+        ? desiredDetails.wanted
+        : desiredDetails.current;
 
-      const latestVersion = versions[desiredDetails.latest];
-      const currentDate = new Date(currentVersion);
-      const latestDate = new Date(latestVersion);
-      const currentTime = currentDate.getTime();
-      const latestTime = latestDate.getTime();
+      const isPreRelease = (semver: string): boolean => semver.includes('alpha') || semver.includes('beta') || semver.includes('pre');
 
-      // 86400000 represents the amount of milliseconds in a day
-      const daysOutdated = Math.floor((latestTime - currentTime) / 86400000)
+      const getNext = (i: number): string => {
+        if (isPreRelease(versions[i + 1])) {
+          return getNext(i + 1);
+        } else {
+          return versions[i + 1];
+        }
+      };
+
+      const nextVersion = getNext(versions.indexOf(currentVersion));
+      const nextVersionPublishDate = versionData[nextVersion];
+      const nextVersionTime = new Date(nextVersionPublishDate).getTime();
+      const currentTime = new Date().getTime();
+
+      const daysOutdated = Math.floor((currentTime - nextVersionTime) / MILLISECONDS_IN_DAY);
 
       let isOutdated = false;
       let isIgnored = false;
