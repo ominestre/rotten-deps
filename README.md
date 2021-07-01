@@ -32,6 +32,11 @@ a `node_modules/` so the wanted version is used instead which is determined base
 
 ## How do I use this?
 
+### Prerequisites
+
+1. NodeJS
+    - We currently support `12.x`, `14.x`. and `16.x`. Other versions may work but are not part of our nightly and push testing.
+
 ### Installation
 
 `npm i -g rotten-deps` or `yarn global add rotten-deps` to install this utility globally

@@ -37,19 +37,22 @@ export const createOutdatedRequest = (): OutdatedRequest => {
   const command = process.platform === 'win32' ? 'npm.cmd' : 'npm';
   const args = ['outdated', '--json'];
 
+  /*  NPM 7.x included a breaking change to the exit codes for the `outdated` command.
+    Prior to v7 the command would exit 1 if you had any outdated dependencies.
+    After v7 it exits 0 */
   return () => new Promise(resolve => {
-    /*  `npm outdated` errors with an exit code of 1 when you have outdated dependencies
-        since one of the success scenarios involves an error this attempts to split
-        actual errors from outdated dependencies */
     try {
-      proc.execFileSync(command, args, { encoding: 'utf8' });
-      // if the command is successful you have no outdated dependencies
-      resolve({});
+      const results = proc.execFileSync(command, args, { encoding: 'utf8' });
+      resolve(JSON.parse(results));
     } catch (error) {
       if (error.message !== 'Command failed: npm outdated --json') resolve(error);
       if (error.status !== 1) resolve(error);
 
-      resolve(JSON.parse(error.stdout));
+      try {
+        resolve(JSON.parse(error.stdout));
+      } catch {
+        resolve(error);
+      }
     }
   });
 };
