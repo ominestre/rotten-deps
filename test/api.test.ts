@@ -36,43 +36,30 @@ describe('API integrations', () => {
     const mocha = filter('mocha');
     const chai = filter('chai');
 
-    // https://github.com/microsoft/TypeScript/issues/19573
-    // created in 2017 for supporting block ignore :(
+    if (leftPadLOL) {
+      assert.equal(leftPadLOL?.name, 'left-pad');
+      assert.equal(leftPadLOL?.current, '1.2.0');
+      assert.isTrue(leftPadLOL?.daysOutdated < 9000, 'Days Outdated should be less than 9000');
+      assert.isFalse(leftPadLOL?.isOutdated, 'left-pad should not be flagged as outdated');
+      assert.isTrue(leftPadLOL?.isStale, 'left-pad 1.2 should be flagged as stale since 1.3 is latest');
+    } else assert.fail('Left pad data was missing');
 
-    // @ts-ignore
-    assert.equal(leftPadLOL.name, 'left-pad');
-    // @ts-ignore
-    assert.equal(leftPadLOL.current, '1.2.0');
-    // @ts-ignore
-    assert.isTrue(leftPadLOL.daysOutdated < 9000, 'Days Outdated should be less than 9000');
-    // @ts-ignore
-    assert.isFalse(leftPadLOL.isOutdated, 'left-pad should not be flagged as outdated');
-    // @ts-ignore
-    assert.isTrue(leftPadLOL.isStale, 'left-pad 1.2 should be flagged as stale since 1.3 is latest');
+    if (mocha) {
+      assert.equal(mocha.name, 'mocha');
+      assert.equal(mocha.current, '2.5.3');
+      assert.isTrue(mocha.isIgnored);
+      assert.isFalse(mocha.isOutdated);
+      assert.isFalse(mocha.isStale);
+    } else assert.fail('Mocha data was missing');
 
-    // @ts-ignore
-    assert.equal(mocha.name, 'mocha');
-    // @ts-ignore
-    assert.equal(mocha.current, '2.5.3');
-    // @ts-ignore
-    assert.isTrue(mocha.isIgnored);
-    // @ts-ignoreZS
-    assert.isFalse(mocha.isOutdated);
-    // @ts-ignore
-    assert.isFalse(mocha.isStale);
-
-    // @ts-ignore
-    assert.equal(chai.name, 'chai');
-    // @ts-ignore
-    assert.equal(chai.current, '1.8.1');
-    // @ts-ignore
-    assert.isTrue(chai.daysOutdated > 1800);
-    // @ts-ignore
-    assert.isTrue(chai.isOutdated);
-    // @ts-ignore
-    assert.isFalse(chai.isIgnored);
-    // @ts-ignore
-    assert.isFalse(chai.isStale);
+    if (chai) {
+      assert.equal(chai.name, 'chai');
+      assert.equal(chai.current, '1.8.1');
+      assert.isTrue(chai.daysOutdated > 1800);
+      assert.isTrue(chai.isOutdated);
+      assert.isFalse(chai.isIgnored);
+      assert.isFalse(chai.isStale);
+    } else assert.fail('Chai data was missing');
   }).timeout(20000);
 
   it('Uses optional reporter hooks', async () => {
