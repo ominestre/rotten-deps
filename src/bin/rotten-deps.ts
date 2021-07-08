@@ -2,7 +2,7 @@
 
 /**
  * CLI options handling and orchestration
- * 
+ *
  * @module
  * @hidden
  */
@@ -20,16 +20,16 @@ import { configuration, generateReport } from '../lib/index';
 import type { ReportResponse } from '../lib/index';
 import type { Config } from '../lib/config';
 
+// 0 - no outdated deps
+// 1 - outdated deps
+// 2 - stale deps but no outdated
+type ExitCode = 0 | 1 | 2;
+
 interface ProcessedReport {
   table: string;
   json: string;
   status: ExitCode;
 }
-
-// 0 - no outdated deps
-// 1 - outdated deps
-// 2 - stale deps but no outdated
-type ExitCode = 0 | 1 | 2;
 
 yargs
   .scriptName('rotten-deps')
@@ -61,7 +61,7 @@ yargs
     const progressBarConfig: cliProgress.Options = {
       hideCursor: true,
       format: ' {bar} | {task} | {value}/{total}',
-    }
+    };
 
 
     const maestro = (config: Config): void => {
@@ -69,52 +69,56 @@ yargs
         resolve(configuration.createConfig(x));
       });
 
-      const processReport = (x: ReportResponse|Error): Promise<ProcessedReport> => new Promise(resolve => {
-        if (x instanceof Error) throw x;
-        
-        if (x.kind === 'warning') {
-          if (x.hasPreinstallWarning) console.warn('Unable to accurately calculate days outdated unless you use npm/yarn install first');
-        }
+      const processReport = (x: ReportResponse|Error): Promise<ProcessedReport> =>
+        new Promise(resolve => {
+          if (x instanceof Error) throw x;
 
-        let exitCode: ExitCode = 0;
-      
-        const table = new Table({
-          head: ['name', 'current version', 'latest version', 'days outdated', 'is outdated'],
-        });
+          if (x.kind === 'warning') {
+            if (x.hasPreinstallWarning) console.warn('Unable to accurately calculate days outdated unless you use npm/yarn install first');
+          }
 
-        x.data.forEach(({
-          name,
-          current,
-          latest,
-          daysOutdated,
-          isOutdated,
-          isIgnored,
-          isStale,
-        }) => {
-          // if the exit code is already 1 for error we don't want to downgrade to warn
-          if (!isIgnored && exitCode !== 1 && isStale) exitCode = 2;
-          if (!isIgnored && isOutdated) exitCode = 1;
-          const outdated = isIgnored ? 'ignored' : isOutdated;
-          table.push([name, current, latest, daysOutdated, outdated]);
-        });
+          let exitCode: ExitCode = 0;
 
-        resolve({
-          table: table.toString(),
-          json: JSON.stringify(x.data),
-          status: exitCode,
+          const table = new Table({
+            head: ['name', 'current version', 'latest version', 'days outdated', 'is outdated'],
+          });
+
+          x.data.forEach(({
+            name,
+            current,
+            latest,
+            daysOutdated,
+            isOutdated,
+            isIgnored,
+            isStale,
+          }) => {
+            // if the exit code is already 1 for error we don't want to downgrade to warn
+            if (!isIgnored && exitCode !== 1 && isStale) exitCode = 2;
+            if (!isIgnored && isOutdated) exitCode = 1;
+            const outdated = isIgnored ? 'ignored' : isOutdated;
+            table.push([name, current, latest, daysOutdated, outdated]);
+          });
+
+          resolve({
+            table: table.toString(),
+            json: JSON.stringify(x.data),
+            status: exitCode,
+          });
         });
-      });
 
       const shoutReport = ({ table, json, status }: ProcessedReport): void => {
         if (argv.json) console.log(json);
         else console.log(table);
         process.exit(status);
-      }
+      };
 
       buildConfigObject(config)
         .then(
-          (config) => {
-            const progress = new cliProgress.SingleBar(progressBarConfig, cliProgress.Presets.shades_grey);
+          (c) => {
+            const progress = new cliProgress.SingleBar(
+              progressBarConfig,
+              cliProgress.Presets.shades_grey,
+            );
 
             const reporter = argv.progress ? {
               setTotal: (total: number) => progress.start(total, 0, { task: 'generating report' }),
@@ -124,8 +128,8 @@ yargs
               done: () => progress.stop(),
             } : undefined;
 
-            return generateReport(config, reporter);
-          }
+            return generateReport(c, reporter);
+          },
         )
         .then(processReport)
         .then(shoutReport);
@@ -134,7 +138,13 @@ yargs
     const configPath = argv['config-path'];
     const defaultExpiration = argv['default-expiration'];
 
-    const configParser = (raw: string): Promise<Config> => new Promise(resolve => resolve(JSON.parse(raw)));
+    const configParser = (raw: string): Promise<Config> =>
+      new Promise(
+        (resolve) => {
+          const parsed = JSON.parse(raw);
+          resolve(parsed);
+        },
+      );
 
     if (configPath && isAbsolute(configPath)) {
       const configReader = configuration.createFileReader(configPath);
@@ -149,7 +159,7 @@ yargs
         .then(configParser)
         .then(maestro);
     } else {
-      let config: Config = {
+      const config: Config = {
         rules: [],
       };
 
