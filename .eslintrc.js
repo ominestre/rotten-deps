@@ -8,5 +8,6 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
     'implicit-arrow-linebreak': 'off',
+    'no-restricted-syntax': ['off', 'ForInStatement', 'ForOfStatement'],
   },
 };
