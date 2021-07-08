@@ -44,3 +44,13 @@ jobs:
       - run: yarn install
       - run: yarn run build
       - run: yarn run rotten
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: lint source
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - uses: actions/checkout@v2
+      - run: yarn install
+      - run: yarn run lint

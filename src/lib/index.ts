@@ -42,11 +42,11 @@ const MILLISECONDS_IN_DAY = 86400000;
 
 /**
  * Compares the details on each dependency flagged as outdated in order to
- * determine how stale a verison actually is.
+ * determine how stale a version actually is.
  *
  * @param r optional reporter object which has a function for setting the
  *  total number of outdated dependencies and another for reporting a
- *  single dependency's data. A usecase for this would be to hook into a
+ *  single dependency's data. A use-case for this would be to hook into a
  *  progress bar or other progress related monitoring.
  */
 export const generateReport = async (c: Config, r?: Reporter): Promise<ReportResponse | Error> => {
@@ -59,6 +59,16 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
   r?.setTotal(Object.keys(outdated).length);
 
   if (outdated instanceof Error) return outdated;
+
+  const detailsPromises = [];
+
+  for (const x of Object.entries(outdated)) {
+    const [name] = x;
+    const getDetails = createDetailsRequest(name);
+    detailsPromises.push(getDetails());
+  }
+
+  const details = await Promise.all(detailsPromises);
 
   try {
     const reportData: ReportData[] = [];
@@ -88,9 +98,9 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
       const getNext = (i: number): string => {
         if (isPreRelease(versions[i + 1])) {
           return getNext(i + 1);
-        } else {
-          return versions[i + 1];
         }
+
+        return versions[i + 1];
       };
 
       const nextVersion = getNext(versions.indexOf(currentVersion));
@@ -104,12 +114,27 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
       let isIgnored = false;
       let isStale = false;
 
-      const rule = rules.filter(x => x.dependencyName === name).shift();
+      const rule = rules.filter(y => y.dependencyName === name).shift();
 
       if (!rule) isOutdated = true;
-      if (!rule && config.defaultExpiration && config.defaultExpiration > daysOutdated) isOutdated = false;
-      if (rule && rule.daysUntilExpiration && rule.daysUntilExpiration <= daysOutdated) isOutdated = true;
-      if (rule && rule.daysUntilExpiration && rule.daysUntilExpiration > daysOutdated) isStale = true;
+
+      if (
+        !rule
+        && config.defaultExpiration
+        && config.defaultExpiration > daysOutdated
+      ) isOutdated = false;
+
+      if (
+        rule
+        && rule.daysUntilExpiration
+        && rule.daysUntilExpiration <= daysOutdated
+      ) isOutdated = true;
+
+      if (
+        rule
+        && rule.daysUntilExpiration
+        && rule.daysUntilExpiration > daysOutdated
+      ) isStale = true;
 
       if (rule && rule.ignore) {
         isIgnored = true;
@@ -128,7 +153,7 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
 
       r?.report(data);
 
-      reportData.push(data);
+      return reportData.push(data);
     }
 
     r?.done();
@@ -139,12 +164,12 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
         data: reportData,
         hasPreinstallWarning: true,
       };
-    } else {
+    }
+
       return {
         kind: 'report',
         data: reportData,
       };
-    }
   } catch (err) {
     return err;
   }

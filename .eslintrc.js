@@ -7,5 +7,7 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
+    'implicit-arrow-linebreak': 'off',
+    'no-restricted-syntax': ['off', 'ForInStatement', 'ForOfStatement'],
   },
 };
