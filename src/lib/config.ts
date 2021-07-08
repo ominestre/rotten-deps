@@ -1,6 +1,6 @@
 /**
  * Rotten Deps configuration library
- * 
+ *
  * @module
  */
 
@@ -56,20 +56,21 @@ type MaybeRules = ParsedRules | ErrorReport;
  */
 const parseRules = (config: Config): MaybeRules => {
   const { rules } = config;
-  let problems: Problem[] = [];
+  const problems: Problem[] = [];
+  const parsedRules: Rule[] = [];
+
   let isValidConfig = true;
-  let parsedRules: Rule[] = [];
 
   rules.forEach(({ dependencyName, ignore = false, daysUntilExpiration = 0 }, i) => {
     const ruleNumber = i + 1;
-    let rule = {
+    const rule = {
       dependencyName,
       ignore,
       daysUntilExpiration,
     };
 
     let isRuleValid = true;
-    let issues: Issue[] = [];
+    const issues: Issue[] = [];
 
     if (typeof dependencyName !== 'string' || dependencyName.length <= 0) {
       isRuleValid = false;
@@ -92,7 +93,7 @@ const parseRules = (config: Config): MaybeRules => {
       issues.push({
         error: `Rule ${ruleNumber} has a type mismatch for daysUntilExpiration`,
         recommendation: 'The daysUntilExpiration field must be of type number',
-      })
+      });
     }
 
     if (!isRuleValid) {
@@ -100,24 +101,26 @@ const parseRules = (config: Config): MaybeRules => {
       problems.push({
         dependencyName,
         issues,
-      })
+      });
     } else {
       parsedRules.push(rule);
     }
   });
 
-  if (!isValidConfig) return {
-    kind: 'error',
-    message: 'Configuration file contains invalid config',
-    report: problems,
-    error: new Error('Configuration file contains invalid config'),
-  };
+  if (!isValidConfig) {
+    return {
+      kind: 'error',
+      message: 'Configuration file contains invalid config',
+      report: problems,
+      error: new Error('Configuration file contains invalid config'),
+    };
+  }
 
   return {
     kind: 'rules',
     rules: parsedRules,
   };
-}
+};
 
 
 /**
@@ -127,16 +130,16 @@ const parseRules = (config: Config): MaybeRules => {
  */
 export const createConfig = (config: Config): Config => {
   const maybeRules = parseRules(config);
+  const table = new Table({
+    head: ['dependency', 'issue', 'recommendation'],
+  });
+
   switch (maybeRules.kind) {
     case 'error':
-      const table = new Table({
-        head: ['dependency', 'issue', 'recommendation'],
-      });
-
       maybeRules.report.forEach(x => {
         const dep = String(x.dependencyName);
         x.issues.forEach(y => {
-          table.push([dep, y.error, y.recommendation])
+          table.push([dep, y.error, y.recommendation]);
         });
       });
 
@@ -148,21 +151,22 @@ export const createConfig = (config: Config): Config => {
         ...config,
         rules: maybeRules.rules,
       };
+    default:
+      throw new Error('Parsed rules was neither collection of rules or error');
   }
 };
 
 
 /**
- * Creates a filereader function for fetching the contents of a config 
+ * Creates a filereader function for fetching the contents of a config
  * file at the provided path.
  * @param absoluteFilePath absolute path to the configuration file
  */
-export const createFileReader = (absoluteFilePath: string): FileReader => {
-  return async () => {
+export const createFileReader = (absoluteFilePath: string): FileReader =>
+  async () => {
     const data = readFileSync(absoluteFilePath, { encoding: 'utf-8' });
     return String(data);
-  }
-};
+  };
 
 
 export default {
