@@ -41,19 +41,21 @@ export const createOutdatedRequest = (): OutdatedRequest => {
     Prior to v7 the command would exit 1 if you had any outdated dependencies.
     After v7 it exits 0 */
   return () => new Promise(resolve => {
-    try {
-      const results = proc.execFileSync(command, args, { encoding: 'utf8' });
-      resolve(JSON.parse(results));
-    } catch (error) {
-      if (error.message !== 'Command failed: npm outdated --json') resolve(error);
-      if (error.status !== 1) resolve(error);
+    proc.execFile(command, args, { encoding: 'utf8' }, (err, stdout) => {
+      if (err) {
+        if (!err.message.includes('Command failed')) resolve(err);
+        if (err.code !== 1) resolve(err);
 
-      try {
-        resolve(JSON.parse(error.stdout));
-      } catch {
-        resolve(error);
+        // hail mary attempt to parse the stdout in spite of the error
+        try {
+          resolve(JSON.parse(stdout));
+        } catch {
+          resolve(err);
+        }
       }
-    }
+
+      resolve(JSON.parse(stdout));
+    });
   });
 };
 
@@ -67,12 +69,10 @@ export const createDetailsRequest = (dependencyName: string): DetailsRequest => 
   const args = ['view', '--json', dependencyName];
 
   return (): Promise<PackageDetails | Error> => new Promise(resolve => {
-    try {
-      const response = proc.execFileSync(command, args, { encoding: 'utf8' });
-      resolve(JSON.parse(response));
-    } catch (e) {
-      resolve(e);
-    }
+    proc.execFile(command, args, { encoding: 'utf8' }, (err, stdout) => {
+      if (err) resolve(err);
+      resolve(JSON.parse(stdout));
+    });
   });
 };
 
