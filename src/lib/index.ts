@@ -146,7 +146,9 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
       };
     }
   } catch (err) {
-    return err;
+    if (err instanceof Error) return err;
+
+    return new Error('Something unexpected happened generating the dependency report');
   }
 };
 
