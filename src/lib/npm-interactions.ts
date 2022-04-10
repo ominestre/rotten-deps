@@ -17,7 +17,7 @@ export interface OutdatedPackage {
   location: string;
 }
 
-interface OutdatedData {
+export interface OutdatedData {
   [key: string]: OutdatedPackage;
 }
 

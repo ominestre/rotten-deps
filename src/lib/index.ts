@@ -4,10 +4,10 @@
  */
 
 import { createFileReader, createConfig } from './config';
-import { createOutdatedRequest, createDetailsRequest } from './npm-interactions';
+import { createOutdatedRequest, createDetailsRequest, PackageDetails } from './npm-interactions';
 
 import type { Config } from './config';
-import type { OutdatedPackage } from './npm-interactions';
+import type { OutdatedPackage, OutdatedData } from './npm-interactions';
 
 interface ReportData {
   name: string,
@@ -38,16 +38,50 @@ interface Reporter {
   done(): void,
 }
 
+type CombinedPackageDetails = PackageDetails & OutdatedPackage;
+
 const MILLISECONDS_IN_DAY = 86400000;
 
 /**
+ * Asynchronously fetches all the package details for the outdated dependencies then combines
+ * the results with with the results of the outdated request to prevent juggling two sets of data.
+ */
+const getIndividualPackageDetails = async (outdated: OutdatedData): Promise<CombinedPackageDetails[] | Error> => {
+  try {
+    const detailsRequestPromises: Promise<PackageDetails | Error>[] = [];
+
+    for (const x of Object.entries(outdated)) {
+      const [name] = x;
+      const getDetailsRequest = createDetailsRequest(name);
+      detailsRequestPromises.push(getDetailsRequest());
+    }
+
+    const results = await Promise.all(detailsRequestPromises);
+    const combinedPackageDetails: CombinedPackageDetails[] = [];
+
+    results.forEach(val => {
+      if (val instanceof Error) throw val;
+
+      const outdatedData = outdated[val.name];
+      combinedPackageDetails.push({
+        ...outdatedData,
+        ...val,
+      });
+    });
+
+    return combinedPackageDetails;
+  } catch (err) {
+    if (err instanceof Error) return err;
+
+    return new Error('Something unexpected happened retrieving individual package details');
+  }
+};
+
+/**
  * Compares the details on each dependency flagged as outdated in order to
- * determine how stale a verison actually is.
+ * determine how stale a version actually is.
  *
- * @param r optional reporter object which has a function for setting the
- *  total number of outdated dependencies and another for reporting a
- *  single dependency's data. A usecase for this would be to hook into a
- *  progress bar or other progress related monitoring.
+ * @param r Optional reporter object with functions for hooking middleware into the report generation process
  */
 export const generateReport = async (c: Config, r?: Reporter): Promise<ReportResponse | Error> => {
   const config = createConfig(c);
@@ -60,96 +94,89 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
 
   if (outdated instanceof Error) return outdated;
 
-  try {
-    const reportData: ReportData[] = [];
-    let hasPreinstallWarning = false;
+  const reportData: ReportData[] = [];
+  let hasPreinstallWarning = false;
 
-    for (const x of Object.entries(outdated)) {
-      const [name, desiredDetails]: [string, OutdatedPackage] = x;
-      const getDetails = createDetailsRequest(name);
-      const details = await getDetails();
+  const individualDetails = await getIndividualPackageDetails(outdated);
 
-      if (details instanceof Error) return details;
-      if (!desiredDetails.current) hasPreinstallWarning = true;
+  if (individualDetails instanceof Error) return individualDetails;
 
-      // it's the time prop in the npm response but it's a collection of versions and dates
-      const { time: versionData } = details;
-      const versions = Object.keys(versionData);
+  individualDetails.forEach(details => {
+    // If the `current` prop is missing this most likely means `npm install` or `yarn install` wasn't run prior
+    if (!details.current) hasPreinstallWarning = true;
 
-      /*  When running `npm outdated` without first installing the current version will be
-          missing causing a breakdown in determination of days outdated. This will use the
-          wanted version instead. */
-      const currentVersion = !desiredDetails.current
-        ? desiredDetails.wanted
-        : desiredDetails.current;
+    // The `time` prop in the npm response is actually a collection of versions and dates
+    const { time: versionData } = details;
 
-      const isPreRelease = (semver: string): boolean => semver.includes('alpha') || semver.includes('beta') || semver.includes('pre');
+    const versions = Object.keys(versionData);
 
-      const getNext = (i: number): string => {
-        if (isPreRelease(versions[i + 1])) {
-          return getNext(i + 1);
-        } else {
-          return versions[i + 1];
-        }
-      };
+    /*  When running `npm outdated` without first installing the current version will be
+      missing causing a breakdown in determination of days outdated. This will use the
+      wanted version instead. */
+    const currentVersion = !details.current
+      ? details.wanted
+      : details.current;
 
-      const nextVersion = getNext(versions.indexOf(currentVersion));
-      const nextVersionPublishDate = versionData[nextVersion];
-      const nextVersionTime = new Date(nextVersionPublishDate).getTime();
-      const currentTime = new Date().getTime();
+    const isPreRelease = (semver: string): boolean => semver.includes('alpha') || semver.includes('beta') || semver.includes('pre');
 
-      const daysOutdated = Math.floor((currentTime - nextVersionTime) / MILLISECONDS_IN_DAY);
-
-      let isOutdated = false;
-      let isIgnored = false;
-      let isStale = false;
-
-      const rule = rules.filter(x => x.dependencyName === name).shift();
-
-      if (!rule) isOutdated = true;
-      if (!rule && config.defaultExpiration && config.defaultExpiration > daysOutdated) isOutdated = false;
-      if (rule && rule.daysUntilExpiration && rule.daysUntilExpiration <= daysOutdated) isOutdated = true;
-      if (rule && rule.daysUntilExpiration && rule.daysUntilExpiration > daysOutdated) isStale = true;
-
-      if (rule && rule.ignore) {
-        isIgnored = true;
-        isOutdated = false;
+    const getNext = (i: number): string => {
+      if (isPreRelease(versions[i + 1])) {
+        return getNext(i + 1);
       }
 
-      const data = {
-        name,
-        current: !desiredDetails.current ? desiredDetails.wanted : desiredDetails.current,
-        latest: desiredDetails.latest,
-        daysOutdated,
-        isOutdated,
-        isIgnored,
-        isStale,
-      };
+      return versions[i + 1];
+    };
 
-      r?.report(data);
+    const nextVersion = getNext(versions.indexOf(currentVersion));
+    const nextVersionPublishDate = versionData[nextVersion];
+    const nextVersionTime = new Date(nextVersionPublishDate).getTime();
+    const currentTime = new Date().getTime();
+    const daysOutdated = Math.floor((currentTime - nextVersionTime) / MILLISECONDS_IN_DAY);
 
-      reportData.push(data);
+    let isOutdated = false;
+    let isIgnored = false;
+    let isStale = false;
+
+    const rule = rules.filter(x => x.dependencyName === details.name).shift();
+
+    if (!rule) isOutdated = true;
+    if (!rule && config.defaultExpiration && config.defaultExpiration > daysOutdated) isOutdated = false;
+    if (rule && rule.daysUntilExpiration && rule.daysUntilExpiration <= daysOutdated) isOutdated = true;
+    if (rule && rule.daysUntilExpiration && rule.daysUntilExpiration > daysOutdated) isStale = true;
+
+    if (rule && rule.ignore) {
+      isIgnored = true;
+      isOutdated = false;
     }
 
-    r?.done();
-    
-    if (hasPreinstallWarning) {
-      return {
-        kind: 'warning',
-        data: reportData,
-        hasPreinstallWarning: true,
-      };
-    } else {
-      return {
-        kind: 'report',
-        data: reportData,
-      };
-    }
-  } catch (err) {
-    if (err instanceof Error) return err;
+    const data = {
+      name: details.name,
+      current: !details.current ? details.wanted : details.current,
+      latest: details.latest,
+      daysOutdated,
+      isOutdated,
+      isIgnored,
+      isStale,
+    };
 
-    return new Error('Something unexpected happened generating the dependency report');
+    r?.report(data);
+    reportData.push(data);
+  });
+
+  r?.done();
+
+  if (hasPreinstallWarning) {
+    return {
+      kind: 'warning',
+      data: reportData,
+      hasPreinstallWarning: true,
+    };
   }
+
+  return {
+    kind: 'report',
+    data: reportData,
+  };
 };
 
 export const configuration = {
