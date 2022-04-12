@@ -5,32 +5,34 @@ Let's assume you're in a situation where you want to use a global compliance per
 1. Create a `.json` configuration file, named anything you want, somewhere on your file system
 2. Create a config with 2 rules for your specific use case
 
-```json
-{
-  "rules": [
+    ```json
     {
-        "dependencyName": "express",
-        "ignore": true,
-    },
-    {
-        "dependencyName": "captain-picard",
-        "daysUntilExpiration": 100
+      "rules": [
+        {
+            "dependencyName": "express",
+            "ignore": true,
+        },
+        {
+            "dependencyName": "captain-picard",
+            "daysUntilExpiration": 100
+        }
+      ]
     }
-  ]
-}
-```
+    ```
 
 3. Run Rotten Deps by using `rotten-deps --config-path <absolute-path-to-your-config>`. Rotten Deps will attempt to resolve a relative path which is useful if you're keeping it with your project but absolute path is preferred.
 
-You should now see an output that reflects that `express` was ignored as well as not failing if you're other dependencies are within their defined compliance period. If this doesn't work as expected or you have questions feel free to drop us an issue at https://github.com/ominestre/rotten-deps/issues.
+You should now see an output that reflects that `express` was ignored as well as not failing if you're other dependencies are within their defined compliance period. If this doesn't work as expected or you have questions feel free to drop us an issue on [our issue board](https://github.com/ominestre/rotten-deps/issues).
 
 ## Options
 
-### Rules: Array<Rule>
+### Rules: `Array<Rule>`
+
 #### Rule
+
 ##### dependencyName: string
 
-This is the exact name of the dependency you are configuraing a rule for.
+This is the exact name of the dependency you are configuring a rule for.
 
 ##### OPTIONAL ignore: boolean
 

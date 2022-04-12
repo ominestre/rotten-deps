@@ -4,7 +4,7 @@
 
 ## What is Rotten Deps?
 
-Rotten Deps builds upon tools like `yarn outdated` and `npm outdated` to provide more than just a pass or fail state to outdated dependecies. You can configure a global or per dependency compliance period which will trigger a warn instead of a fail. This provides more breathing room for updating without blocking your builds.
+Rotten Deps builds upon tools like `yarn outdated` and `npm outdated` to provide more than just a pass or fail state to outdated dependencies. You can configure a global or per dependency compliance period which will trigger a warn instead of a fail. This provides more breathing room for updating without blocking your builds.
 
 ## Why and when should I use this?
 
@@ -18,7 +18,7 @@ Assuming you've decided that 14 days is an acceptable compliance periods for upd
 
 ### Global compliance period
 
-This is good for setting organization base rules if you are working in an organization that has patching compliance windows. 
+This is good for setting organization base rules if you are working in an organization that has patching compliance windows.
 
 ## How is days outdated determined?
 
@@ -47,7 +47,7 @@ a `node_modules/` so the wanted version is used instead which is determined base
 
 ### Usage
 
-You can find more in-depth documentation at https://ominestre.github.io/rotten-deps/.
+You can find more in-depth documentation hosted on our [GitHub pages](https://ominestre.github.io/rotten-deps/).
 
 #### CLI
 
@@ -55,13 +55,13 @@ To see details on command usage and options use `rotten-deps --help`, or if you 
 
 #### API
 
-At this time the API isn't officially supported but you can probably figure it out based on the reference docs at https://ominestre.github.io/rotten-deps/
+At this time the API isn't officially supported but you can probably figure it out based on the reference docs hosted on our [GitHub Pages](https://ominestre.github.io/rotten-deps/)
 
 #### Exit codes and meanings
 
-* `0` indicates that no dependencies are stale or outdated
-* `1` indicates that you have outdated dependencies
-* `2` indicates that you have stale dependencies but no outdated
+- `0` indicates that no dependencies are stale or outdated
+- `1` indicates that you have outdated dependencies
+- `2` indicates that you have stale dependencies but no outdated
 
 ## Contributing
 
