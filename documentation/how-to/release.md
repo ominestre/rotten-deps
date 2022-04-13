@@ -6,5 +6,7 @@
     - Once the dummy version is created the docs are generated
     - The docs and `CHANGELOG.md` are staged in git
     - The real `npm version` is run creating a release commit and tag
-3. Push the release using `git push origin master`
+3. Push the release using `git push origin main`
 4. Push the new tag using `git push --tags`
+5. Login to NPM using `npm login`
+6. Publish to NPM using `npm publish --access public`
