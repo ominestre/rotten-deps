@@ -44,10 +44,8 @@ yargs
     requiresArg: false,
   })
   .option('default-expiration', {
-    description: `sets a default grace period for all dependencies. this cannot be used with a configuration file.
-      you should specifiy this there instead`,
+    description: 'sets a default grace period for all dependencies',
     type: 'number',
-    conflicts: 'config-path',
   })
   .option('progress', {
     description: 'displays a progress bar',
@@ -143,6 +141,7 @@ yargs
       new Promise(
         (resolve) => {
           const parsed = JSON.parse(raw);
+          if (defaultExpiration) parsed.defaultExpiration = defaultExpiration;
           resolve(parsed);
         },
       );
