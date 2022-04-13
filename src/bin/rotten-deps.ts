@@ -80,7 +80,7 @@ yargs
           let exitCode: ExitCode = 0;
 
           const table = new Table({
-            head: ['name', 'current version', 'latest version', 'days outdated', 'is outdated'],
+            head: ['name', 'current version', 'latest version', 'days allowed', 'days outdated', 'is outdated'],
           });
 
           x.data.forEach(({
@@ -91,12 +91,13 @@ yargs
             isOutdated,
             isIgnored,
             isStale,
+            daysAllowed,
           }) => {
             // if the exit code is already 1 for error we don't want to downgrade to warn
             if (!isIgnored && exitCode !== 1 && isStale) exitCode = 2;
             if (!isIgnored && isOutdated) exitCode = 1;
             const outdated = isIgnored ? 'ignored' : isOutdated;
-            table.push([name, current, latest, daysOutdated, outdated]);
+            table.push([name, current, latest, daysAllowed, daysOutdated, outdated]);
           });
 
           resolve({

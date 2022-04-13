@@ -94,6 +94,20 @@ describe('API integrations', () => {
     assert.equal(maybeReport.kind, 'warning', 'The report type should be a report with warnings');
   }).timeout(20000);
 
+  it('Displays days allowed and correctly determines if outdated', async () => {
+    sampleAppDir();
+    const config = getTestConfig('rules-only-config');
+    const maybeReport = await generateReport(config);
+
+    if (maybeReport instanceof Error) assert.fail();
+    
+    maybeReport.data.forEach(report => {
+      assert.exists(report.daysAllowed);
+      assert.isFalse(report.daysAllowed > report.daysOutdated && report.isOutdated);
+      assert.isFalse(report.daysAllowed < report.daysOutdated && !report.isOutdated);
+    });
+  }).timeout(20000);
+
   /*  TODO Sitting on this one because you should just be using npm or yarn outdated.
       Not sure I want to support this scenario */
   xit('generate a report without config');
