@@ -58,6 +58,15 @@ describe('Configuration library', () => {
 
     assert.throws(d, /Configuration file contains invalid config/);
 
+    const e = configLib.createConfig.bind(null, {
+      rules: [
+        // @ts-ignore intentionally passing bad type
+        { dependencyName: 'barforama', ignore: true, daysUntilExpiration: 30, reason: 12345 },
+      ]
+    });
+
+    assert.throws(e, /Configuration file contains invalid config/);
+
     sinon.restore();
   });
 
@@ -71,8 +80,8 @@ describe('Configuration library', () => {
     assert.equal(kind, 'config');
     assert.deepEqual(maybeConfig, {
       rules: [
-        { dependencyName: 'trevorforget', ignore: false, daysUntilExpiration: 9000 },
-        { dependencyName: 'banana', ignore: true, daysUntilExpiration: 13 },
+        { dependencyName: 'trevorforget', ignore: false, daysUntilExpiration: 9000, reason: '' },
+        { dependencyName: 'banana', ignore: true, daysUntilExpiration: 13, reason: '' },
       ],
     });
   });

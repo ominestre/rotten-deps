@@ -13,7 +13,7 @@ import {
   resolve as pathResolve,
 } from 'path';
 import cliProgress from 'cli-progress';
-import Table from 'cli-table';
+import Table from 'cli-table3';
 import { existsSync } from 'fs';
 import { configuration, generateReport } from '../lib/index';
 
@@ -78,7 +78,17 @@ yargs
           let exitCode: ExitCode = 0;
 
           const table = new Table({
-            head: ['name', 'current version', 'latest version', 'days allowed', 'days outdated', 'is outdated'],
+            wordWrap: true,
+            head: [
+              'name',
+              'current version',
+              'latest version',
+              'days allowed',
+              'days outdated',
+              'is outdated',
+              'reason',
+            ],
+            colWidths: [50, 10, 10, 10, 10, 10, 50],
           });
 
           x.data.forEach(({
@@ -90,12 +100,13 @@ yargs
             isIgnored,
             isStale,
             daysAllowed,
+            reason,
           }) => {
             // if the exit code is already 1 for error we don't want to downgrade to warn
             if (!isIgnored && exitCode !== 1 && isStale) exitCode = 2;
             if (!isIgnored && isOutdated) exitCode = 1;
             const outdated = isIgnored ? 'ignored' : isOutdated;
-            table.push([name, current, latest, daysAllowed, daysOutdated, outdated]);
+            table.push([name, current, latest, daysAllowed, daysOutdated, outdated, reason]);
           });
 
           resolve({

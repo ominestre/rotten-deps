@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "cli-progress": "^3.10.0",
-    "cli-table": "~0.3.11",
+    "cli-table3": "^0.6.2",
     "yargs": "~17.4.0"
   }
 }
