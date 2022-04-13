@@ -1,3 +1,27 @@
+## v1.0.0
+
+🎉 With the hem and haw of the CHANGELOG all of the previous betas weren't done in a way to nicely rollup for the v1.0.0 release notes. So instead here is a nice list of the features I'm launching this with:
+
+### API
+
+- Everything is organized so that you can directly import `rotten-deps` and use it for programmatic report generation. You can also import the individual libraries for processing config and interacting with NPM but this isn't officially supported at this moment.
+
+### CLI
+
+- You can set a default expiration via the CLI flag `--default-expiration`
+- You can output raw JSON instead of a table using the `--json` flag
+- By default you get a nice table display
+
+### Exit codes for CI
+
+As mentioned in the main `README.md` the project uses exit codes to differentiate between a success (no outdated), a warn (some outdated but within compliance windows), and a fail (something is outdated beyond compliance window).
+
+### Configuration
+
+- You can flat out ignore a dependency from the check using the `ignore` property of a rule
+- You can give a dependency it's own compliance window separate from  the default expiration
+- You can provide a reason for the whitelist to help you remember why you whitelisted it in the first place (e.g. Depends on Bootstrap v1.2.3 upgrade)
+
 ## v1.0.0-beta.26
 
 ### Enhancement
