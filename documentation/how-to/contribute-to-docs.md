@@ -23,29 +23,25 @@ Create your new `.md` file in one of the folders mentioned above based upon your
 
 ### Step two
 
-Update the `typedoc.json` configuration file. The `pages` object contains all of the configuration for embedding markdown in the generated docs.
+Update the `typedoc.js` configuration file. The `pluginPages` object contains all of the configuration for embedding markdown in the generated docs.
 
-```json
-"pages": {
-  "groups": [
+```js
+pluginPages: {
+  source: './documentation/',
+  pages: [
     {
-      "title": "How To",
-      "pages": [
-        { "title": "Contribute to the documentation", "source": "./documentation/how-to/contribute-to-docs.md" }
-      ]
-    }
+      title: 'How To',
+      children: [
+        { title: 'Contribute to these docs', source: './how-to/contribute-to-docs.md' },
+        { title: 'Create a config file', source: './how-to/create-a-config-file.md' },
+        { title: 'Release', source: './how-to/create-a-config-file.md' },
+      ],
+    },
   ],
-  "output": "pages"
-}
+},
 ```
 
-A `group` is a section header that the documents belong to. In the example above you can see there is a group named `How To` and it's member pages are describe below. To add your new documentation determine which group it should belong to and add a new page.
-
-```json
-"pages": [
-  { "title": "My new docs", "source": "./documentation/how-to/my-new-docs.md" }
-]
-```
+Above you can see a page with just a title and no source for `How To`. This creates the How To section header and brings all the specified child documents under it.
 
 ## Updating API/Reference documentation
 
