@@ -17,6 +17,7 @@ interface ReportData {
   isOutdated: boolean,
   isIgnored: boolean,
   isStale: boolean,
+  daysAllowed: number | 'inf',
 }
 
 interface Report {
@@ -136,17 +137,31 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
     let isOutdated = false;
     let isIgnored = false;
     let isStale = false;
+    let daysAllowed: number | 'inf' = 0;
 
     const rule = rules.filter(x => x.dependencyName === details.name).shift();
 
     if (!rule) isOutdated = true;
-    if (!rule && config.defaultExpiration && config.defaultExpiration > daysOutdated) isOutdated = false;
-    if (rule && rule.daysUntilExpiration && rule.daysUntilExpiration <= daysOutdated) isOutdated = true;
-    if (rule && rule.daysUntilExpiration && rule.daysUntilExpiration > daysOutdated) isStale = true;
+
+    if (!rule && config.defaultExpiration && config.defaultExpiration > daysOutdated) {
+      isOutdated = false;
+      daysAllowed = config.defaultExpiration;
+    }
+
+    if (rule && rule.daysUntilExpiration && rule.daysUntilExpiration <= daysOutdated) {
+      isOutdated = true;
+      daysAllowed = rule.daysUntilExpiration;
+    }
+
+    if (rule && rule.daysUntilExpiration && rule.daysUntilExpiration > daysOutdated) {
+      isStale = true;
+      daysAllowed = rule.daysUntilExpiration;
+    }
 
     if (rule && rule.ignore) {
       isIgnored = true;
       isOutdated = false;
+      daysAllowed = 'inf';
     }
 
     const data = {
@@ -157,6 +172,7 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
       isOutdated,
       isIgnored,
       isStale,
+      daysAllowed,
     };
 
     r?.report(data);
