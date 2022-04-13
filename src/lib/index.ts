@@ -117,7 +117,8 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
       ? details.wanted
       : details.current;
 
-    const isPreRelease = (semver: string): boolean => semver.includes('alpha') || semver.includes('beta') || semver.includes('pre');
+    const isPreRelease = (semver: string): boolean =>
+      semver.includes('alpha') || semver.includes('beta') || semver.includes('pre');
 
     const getNext = (i: number): string => {
       if (isPreRelease(versions[i + 1])) {
