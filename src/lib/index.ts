@@ -18,6 +18,7 @@ interface ReportData {
   isIgnored: boolean,
   isStale: boolean,
   daysAllowed: number | 'inf',
+  reason: string,
 }
 
 interface Report {
@@ -174,6 +175,7 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
       isIgnored,
       isStale,
       daysAllowed,
+      reason: rule?.reason || '',
     };
 
     r?.report(data);

@@ -38,3 +38,4 @@ This is a collection of rules for each dependency. The individual rules have the
 - `dependencyName: string` The name of the dependency you're configuring a rule for
 - OPTIONAL `ignore: boolean` Sets the dependency to be ignored. This will never trigger a fail due to being outdated.
 - OPTIONAL `daysUntilExpiration: number` This sets the expiration period for the individual dependency
+- OPTIONAL `reason: string` This sets the reason for the specific rule which will be output into the table. Useful for memorizing why you whitelisted something to make it more likely that you follow up and fix later.

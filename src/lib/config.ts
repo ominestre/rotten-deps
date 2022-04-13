@@ -4,7 +4,7 @@
  * @module
  */
 
-import Table from 'cli-table';
+import Table from 'cli-table3';
 import { readFileSync } from 'fs';
 
 
@@ -12,6 +12,7 @@ interface Rule {
   readonly dependencyName: string;
   readonly ignore?: boolean;
   readonly daysUntilExpiration?: number;
+  readonly reason?: string;
 }
 
 export interface Config {
@@ -61,12 +62,18 @@ const parseRules = (config: Config): MaybeRules => {
 
   let isValidConfig = true;
 
-  rules.forEach(({ dependencyName, ignore = false, daysUntilExpiration = 0 }, i) => {
+  rules.forEach(({
+    dependencyName,
+    ignore = false,
+    daysUntilExpiration = 0,
+    reason = '',
+  }, i) => {
     const ruleNumber = i + 1;
     const rule = {
       dependencyName,
       ignore,
       daysUntilExpiration,
+      reason,
     };
 
     let isRuleValid = true;
@@ -93,6 +100,14 @@ const parseRules = (config: Config): MaybeRules => {
       issues.push({
         error: `Rule ${ruleNumber} has a type mismatch for daysUntilExpiration`,
         recommendation: 'The daysUntilExpiration field must be of type number',
+      });
+    }
+
+    if (typeof reason !== 'string') {
+      isRuleValid = false;
+      issues.push({
+        error: `Rule ${ruleNumber} has a type mismatch for the reason property`,
+        recommendation: 'The value for reason must be a string',
       });
     }
 
