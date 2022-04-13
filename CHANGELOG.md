@@ -1,3 +1,19 @@
+## v1.0.0-beta.26
+
+### Enhancement
+
+- Enables using `--default-expiration` CLI flag alongside a config file. In the case of it being specified in both locations the CLI flag value takes precedence. [change](https://github.com/ominestre/rotten-deps/pull/83)
+- Adds `reason` property to the rules for making notes on why you whitelisted a dependency [change](https://github.com/ominestre/rotten-deps/pull/84)
+
+### Documentation
+
+- Replaces unmaintained typedoc pages plugin [change](https://github.com/ominestre/rotten-deps/pull/82)
+- Revises the release and config docs. The config docs were missing a property and the formatting was changed for better readability at a glance. [change](https://github.com/ominestre/rotten-deps/pull/80)
+
+### Chores
+
+- Replaces `cli-table` with `cli-table3` since the former is no longer maintained
+
 ## 1.0.0-beta.25
 
 ### Enhancements
