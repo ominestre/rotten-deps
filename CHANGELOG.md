@@ -1,3 +1,11 @@
+## v1.0.1
+
+### Dependencies
+
+- Updated several dev dependencies which finally clears up the `eslint-plugin-import` vulnerabilities failing the audit pipeline
+- Updated `yargs` 17.4.0 -> 17.4.1
+  - This addresses several bugs that I don't believe have an impact on this project
+
 ## v1.0.0
 
 🎉 With the hem and haw of the CHANGELOG all of the previous betas weren't done in a way to nicely rollup for the v1.0.0 release notes. So instead here is a nice list of the features I'm launching this with:
