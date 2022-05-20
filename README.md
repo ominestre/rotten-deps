@@ -35,7 +35,8 @@ a `node_modules/` so the wanted version is used instead which is determined base
 ### Prerequisites
 
 1. NodeJS
-    - We currently support `12.x`, `14.x`. and `16.x`. Other versions may work but are not part of our nightly and push testing.
+    - Must be `v14.x` or newer
+    - Test strategy currently covers `v14`, `v16`, and `v18` LTS versions
 
 ### Installation
 
