@@ -1,3 +1,14 @@
+## v2.0.0
+
+### Breaking
+
+- Dropped support for Node 12 as it exited maintenance. Added testing support for Node 18 in it's place.
+
+### Dependencies
+
+- Updates yargs to 17.5.1 which dropped support for Node 12
+- Updates `cli-progress` to 3.11.1 which doesn't have consequences for this project
+
 ## v1.0.1
 
 ### Dependencies
