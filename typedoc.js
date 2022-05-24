@@ -14,7 +14,7 @@ module.exports = {
         children: [
           { title: 'Contribute to these docs', source: './how-to/contribute-to-docs.md' },
           { title: 'Create a config file', source: './how-to/create-a-config-file.md' },
-          { title: 'Release', source: './how-to/create-a-config-file.md' },
+          { title: 'Release', source: './how-to/release.md' },
         ],
       },
     ],
