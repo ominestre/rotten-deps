@@ -1,5 +1,6 @@
 import { assert } from 'chai';
 import npmLib from '../src/lib/npm-interactions';
+import { restoreDir, sampleAppDir } from './helpers/test-directory-helpers';
 
 
 /**
@@ -16,23 +17,27 @@ const setPlatformWindows = setProcessPlatform('win32');
 const setPlatformDarwin = setProcessPlatform('darwin');
 
 describe('NPM Interaction Library', () => {
-  it('Should create a function for outdated and view requests for windows machines', () => {
+  it('Should create functions for interactions on windows machines', () => {
     setPlatformWindows();
     const getOutdatedRequest = npmLib.createOutdatedRequest();
     const getDetailsRequest = npmLib.createDetailsRequest('banana');
+    const getListRequest = npmLib.createListRequest();
 
     assert(typeof getOutdatedRequest === 'function');
     assert(typeof getDetailsRequest === 'function');
+    assert(typeof getListRequest === 'function');
     restorePlatform();
   });
 
-  it('Should create a function for outdated and view requests for non-windows machines', () => {
+  it('Should create functions for interactions on non-windows machines', () => {
     setPlatformDarwin();
     const getOutdatedRequest = npmLib.createOutdatedRequest();
     const getDetailsRequest = npmLib.createDetailsRequest('banana');
+    const getListRequest = npmLib.createListRequest();
 
     assert(typeof getOutdatedRequest === 'function');
     assert(typeof getDetailsRequest === 'function');
+    assert(typeof getListRequest === 'function');
     restorePlatform();
   });
 
@@ -47,5 +52,19 @@ describe('NPM Interaction Library', () => {
     const response = await getDetailsRequest();
     assert.equal(response.name, 'express');
   }).timeout(8000);
+
+  it('Should get a list of installed dependencies', async () => {
+    sampleAppDir();
+    const getListRequest = npmLib.createListRequest();
+    const response = await getListRequest();
+
+    assert(!(response instanceof Error));
+
+    const listOfInstalledDependencies = response.getListOfInstalledDependencies();
+    assert(listOfInstalledDependencies.includes('mocha'));
+    restoreDir();
+  }).timeout(8000);
+
+  it('Should get a list of installed prod dependencies');
 });
 

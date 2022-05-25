@@ -29,6 +29,26 @@ interface DetailsRequest {
   (): Promise<PackageDetails|Error>;
 }
 
+interface ListDependency {
+  version: string;
+  resolved: string;
+}
+
+interface ListResponse {
+  version: string,
+  name: string,
+  dependencies: Record<string, ListDependency>;
+}
+
+interface ListWithHelpers {
+  data: ListResponse;
+  getListOfInstalledDependencies: () => Array<string>;
+}
+
+interface ListRequest {
+  (): Promise<ListWithHelpers | Error>;
+}
+
 
 /**
  * Creates a function for running `npm outdated`
@@ -77,7 +97,38 @@ export const createDetailsRequest = (dependencyName: string): DetailsRequest => 
 };
 
 
+const isDependencyList = (result: ListResponse | any): result is ListResponse =>
+  (result as ListResponse).version !== undefined
+  && (result as ListResponse).name !== undefined
+  && (result as ListResponse).dependencies !== undefined;
+
+
+/**
+ * Uses the `npm ls` command to get a list of installed dependencies of a project.
+ * @param prod if this is set to true dev dependencies will be ignored
+ */
+export const createListRequest = (prod = false): ListRequest => {
+  const command = process.platform === 'win32' ? 'npm.cmd' : 'npm';
+  const args = ['ls', '--json'];
+
+  if (prod) args.push('--prod');
+
+  return () => new Promise(resolve => {
+    proc.execFile(command, args, { encoding: 'utf8' }, (err, stdout) => {
+      const results = JSON.parse(stdout);
+      if (!isDependencyList(results)) resolve(new Error('unexpected list response'));
+
+      resolve({
+        data: results,
+        getListOfInstalledDependencies: () => Object.getOwnPropertyNames(results.dependencies),
+      });
+    });
+  });
+};
+
+
 export default {
   createOutdatedRequest,
   createDetailsRequest,
+  createListRequest,
 };

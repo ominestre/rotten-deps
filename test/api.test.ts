@@ -4,22 +4,10 @@ import { assert } from 'chai';
 import { spy } from 'sinon';
 import { generateReport } from '../src/lib/index';
 import { createOutdatedRequest } from '../src/lib/npm-interactions';
-
-
-const defaultDir = process.cwd();
-const changeDir = (directory: string) => () => process.chdir(directory);
-const restoreDir = changeDir(defaultDir);
-const sampleAppDir = changeDir(
-  join(__dirname, './dummies/sample-app'),
-);
-const noInstallDir = changeDir(
-  join(__dirname, './dummies/sample-app-no-install'),
-);
-
+import { restoreDir, sampleAppDir, noInstallDir } from './helpers/test-directory-helpers';
 
 const sampleConfigDir = join(__dirname, './dummies/');
 const getTestConfig = (configID: string) => JSON.parse(readFileSync(`${sampleConfigDir}/${configID}.json`, { encoding: 'utf8' }));
-
 
 describe('API integrations', () => {
   afterEach(restoreDir);

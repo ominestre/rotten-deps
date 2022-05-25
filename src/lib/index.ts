@@ -4,7 +4,12 @@
  */
 
 import { createFileReader, createConfig } from './config';
-import { createOutdatedRequest, createDetailsRequest, PackageDetails } from './npm-interactions';
+import {
+  createOutdatedRequest,
+  createDetailsRequest,
+  PackageDetails,
+  createListRequest,
+} from './npm-interactions';
 
 import type { Config } from './config';
 import type { OutdatedPackage, OutdatedData } from './npm-interactions';
@@ -79,6 +84,34 @@ const getIndividualPackageDetails = async (outdated: OutdatedData): Promise<Comb
   }
 };
 
+
+/**
+ * Compares a set of outdated dependencies and compares it to the list of installed prod dependencies
+ * and drops any value from the outdated dependencies that doesn't appear in the set of installed
+ * dependencies
+ */
+const filterOutdated = async (c: Config, outdated: OutdatedData): Promise<OutdatedData> => {
+  if (!c.ignoreDevDependencies) return outdated;
+
+  const listRequest = createListRequest(true);
+  const maybeModules = await listRequest();
+
+  if (maybeModules instanceof Error) throw maybeModules;
+  const setOfInstalledDependencies = new Set(maybeModules.getListOfInstalledDependencies());
+  const setOfOutdatedDependencies = new Set(Object.entries(outdated));
+
+  const filtered: OutdatedData = {};
+
+  setOfOutdatedDependencies.forEach((dep) => {
+    const [name, data] = dep;
+    if (!setOfInstalledDependencies.has(name)) setOfOutdatedDependencies.delete(dep);
+    filtered[name] = data;
+  });
+
+  return filtered;
+};
+
+
 /**
  * Compares the details on each dependency flagged as outdated in order to
  * determine how stale a version actually is.
@@ -96,10 +129,12 @@ export const generateReport = async (c: Config, r?: Reporter): Promise<ReportRes
 
   if (outdated instanceof Error) return outdated;
 
+  const filteredOutdated = await filterOutdated(c, outdated);
+
   const reportData: ReportData[] = [];
   let hasPreinstallWarning = false;
 
-  const individualDetails = await getIndividualPackageDetails(outdated);
+  const individualDetails = await getIndividualPackageDetails(filteredOutdated);
 
   if (individualDetails instanceof Error) return individualDetails;
 
