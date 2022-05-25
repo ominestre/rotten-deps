@@ -4,6 +4,7 @@ module.exports = () => ({
     'src/lib/*.ts',
     { pattern: 'src/bin/rotten-deps.ts', instrument: false },
     { pattern: 'test/dummies/**/*', instrument: false },
+    { pattern: 'test/helpers/**/*', instrument: false },
   ],
   tests: [
     'test/*.test.js',

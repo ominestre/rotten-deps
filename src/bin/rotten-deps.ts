@@ -52,6 +52,12 @@ yargs
     boolean: true,
     requiresArg: false,
   })
+  .option('ignore-dev', {
+    description: 'ignores developer dependencies',
+    boolean: true,
+    requiresArg: false,
+    default: false,
+  })
   .parseAsync()
   .then(argv => {
     if (argv.help) yargs.showHelp();
@@ -147,12 +153,14 @@ yargs
 
     const configPath = argv['config-path'];
     const defaultExpiration = argv['default-expiration'];
+    const ignoreDev = argv['ignore-dev'];
 
     const configParser = (raw: string): Promise<Config> =>
       new Promise(
         (resolve) => {
           const parsed = JSON.parse(raw);
           if (defaultExpiration) parsed.defaultExpiration = defaultExpiration;
+          if (ignoreDev) parsed.ignoreDevDependencies = ignoreDev;
           resolve(parsed);
         },
       );
@@ -175,6 +183,7 @@ yargs
       };
 
       if (defaultExpiration) config.defaultExpiration = defaultExpiration;
+      if (ignoreDev) config.ignoreDevDependencies = ignoreDev;
 
       maestro(config);
     }

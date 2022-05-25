@@ -17,6 +17,7 @@ interface Rule {
 
 export interface Config {
   defaultExpiration?: number;
+  ignoreDevDependencies?: boolean,
   readonly kind?: 'config';
   readonly rules: Rule[];
 }
