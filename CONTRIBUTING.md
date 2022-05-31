@@ -32,15 +32,4 @@ This project will use https://keepachangelog.com/en/1.0.0/ as the format for it'
 
 ## Release
 
-We're investigating automating this release and publish process but for now here are the steps to generating a release.
-
-1. Checkout branch `main` and make sure it is up to date
-2. Run command `yarn install` then `yarn run build` to prep the application for deployment
-3. Update [CHANGELOG.md](./CHANGELOG.md) and change the [UNRELEASED] section to reflect your next semver version (v1.0.0, v1.2.3, v2.3.4-beta001).
-4. Stage the CHANGELOG.md changes in git but using command `git add CHANGELOG.md`
-5. Double check that your working directory is clean other than the CHANGELOG.md change using `git status` or `git diff`. The following
-command is dangerous and will add any dirty changes.
-6. Use the command `npm version --force <semver>`
-  * `--force` is what will include the CHANGELOG.md changes in this release commit and tag
-7. Use the command `npm publish --access public` to publish
-
+[How to create a release](./documentation/how-to/release.md)
