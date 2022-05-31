@@ -1,3 +1,13 @@
+## v2.1.0
+
+### Added
+
+- Adding CLI argument `--prod` and a configuration item for only analyzing production dependencies [issue](https://github.com/ominestre/rotten-deps/issues/1) [change](https://github.com/ominestre/rotten-deps/pull/92)
+
+### Fixed
+
+- Fixed a broken link in the generated docs for the How-To guide on doing a release
+
 ## v2.0.0
 
 ### Breaking
