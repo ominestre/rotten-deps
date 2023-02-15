@@ -1,3 +1,12 @@
+## v2.1.1
+
+### Dependencies
+
+- Vulnerability patching for `json5` [PR](https://github.com/ominestre/rotten-deps/pull/95)
+- Vulnerability patching for `minimatch` [PR](https://github.com/ominestre/rotten-deps/pull/97)
+- Updates TypeScript to v4.9 [PR](https://github.com/ominestre/rotten-deps/pull/96)
+- Updates minor/patch versions of all dependencies [PR](https://github.com/ominestre/rotten-deps/pull/96)
+
 ## v2.1.0
 
 ### Added
