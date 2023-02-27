@@ -1,3 +1,10 @@
+## v2.1.2
+
+### Dependencies
+
+- Updates multiple dev dependency minor versions [PR](https://github.com/ominestre/rotten-deps/pull/98)
+- Updated Yargs and CLI progress minor versions. Changes should not be significant to this project. [PR](https://github.com/ominestre/rotten-deps/pull/98)
+
 ## v2.1.1
 
 ### Dependencies
